@@ -136,24 +136,31 @@ export class CodeAnalyzer {
   }
 
   // Main analysis function
-  public analyzeDirectory(directory: string): CallGraph {
-    console.log(`\n📂 Analyzing directory: ${directory}\n`);
+// In src/analyzer.ts, update analyzeDirectory:
+
+public analyzeDirectory(directory: string): CallGraph {
+  // Don't print here - let CLI handle output
+  const files = this.findJSFiles(directory);
   
-    // Find all JavaScript files
-    const files = this.findJSFiles(directory);
-    console.log(`Found ${files.length} files\n`);
-  
-    // Analyze each file
-    files.forEach(file => this.analyzeFile(file));
-  
-    // Build the graph
-    const graph = new CallGraph();
-  
-    // Add all functions as nodes
-    this.functions.forEach(fn => {
-      graph.addNode(fn.name, fn.file, fn.line);
-    });
-      // Add all calls as edges
+  // Analyze silently
+  files.forEach(file => {
+    try {
+      const code = fs.readFileSync(file, 'utf-8');
+      const tree = this.parser.parse(code);
+      this.extractFunctions(tree, file);
+      this.extractCalls(tree, file);
+    } catch (error) {
+      // Silently skip files that can't be parsed
+    }
+  });
+
+  // Build graph
+  const graph = new CallGraph();
+
+  this.functions.forEach(fn => {
+    graph.addNode(fn.name, fn.file, fn.line);
+  });
+
   this.calls.forEach(call => {
     graph.addEdge(call.caller, call.callee, call.file, call.line);
   });

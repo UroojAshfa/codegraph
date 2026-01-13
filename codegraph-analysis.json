@@ -1,0 +1,894 @@
+{
+  "nodes": [
+    {
+      "id": "CodeAnalyzer.constructor",
+      "label": "CodeAnalyzer.constructor",
+      "file": "src\\analyzer.ts",
+      "line": 33
+    },
+    {
+      "id": "CodeAnalyzer.findJSFiles",
+      "label": "CodeAnalyzer.findJSFiles",
+      "file": "src\\analyzer.ts",
+      "line": 42
+    },
+    {
+      "id": "CodeAnalyzer.extractFunctions",
+      "label": "CodeAnalyzer.extractFunctions",
+      "file": "src\\analyzer.ts",
+      "line": 71
+    },
+    {
+      "id": "visit",
+      "label": "visit",
+      "file": "src\\analyzer.ts",
+      "line": 72
+    },
+    {
+      "id": "CodeAnalyzer.extractCalls",
+      "label": "CodeAnalyzer.extractCalls",
+      "file": "src\\analyzer.ts",
+      "line": 135
+    },
+    {
+      "id": "CodeAnalyzer.analyzeFile",
+      "label": "CodeAnalyzer.analyzeFile",
+      "file": "src\\analyzer.ts",
+      "line": 255
+    },
+    {
+      "id": "CodeAnalyzer.analyzeDirectory",
+      "label": "CodeAnalyzer.analyzeDirectory",
+      "file": "src\\analyzer.ts",
+      "line": 273
+    },
+    {
+      "id": "CallGraph.addNode",
+      "label": "CallGraph.addNode",
+      "file": "src\\graph.ts",
+      "line": 21
+    },
+    {
+      "id": "CallGraph.addEdge",
+      "label": "CallGraph.addEdge",
+      "file": "src\\graph.ts",
+      "line": 35
+    },
+    {
+      "id": "CallGraph.getNode",
+      "label": "CallGraph.getNode",
+      "file": "src\\graph.ts",
+      "line": 39
+    },
+    {
+      "id": "CallGraph.getCallers",
+      "label": "CallGraph.getCallers",
+      "file": "src\\graph.ts",
+      "line": 43
+    },
+    {
+      "id": "CallGraph.getCallees",
+      "label": "CallGraph.getCallees",
+      "file": "src\\graph.ts",
+      "line": 50
+    },
+    {
+      "id": "CallGraph.getAllNodes",
+      "label": "CallGraph.getAllNodes",
+      "file": "src\\graph.ts",
+      "line": 57
+    },
+    {
+      "id": "CallGraph.getAllEdges",
+      "label": "CallGraph.getAllEdges",
+      "file": "src\\graph.ts",
+      "line": 61
+    },
+    {
+      "id": "CallGraph.toJSON",
+      "label": "CallGraph.toJSON",
+      "file": "src\\graph.ts",
+      "line": 65
+    },
+    {
+      "id": "CallGraph.toMermaid",
+      "label": "CallGraph.toMermaid",
+      "file": "src\\graph.ts",
+      "line": 73
+    },
+    {
+      "id": "sanitize",
+      "label": "sanitize",
+      "file": "src\\graph.ts",
+      "line": 89
+    },
+    {
+      "id": "CallGraph.printStats",
+      "label": "CallGraph.printStats",
+      "file": "src\\graph.ts",
+      "line": 113
+    }
+  ],
+  "edges": [
+    {
+      "from": "CodeAnalyzer.constructor",
+      "to": "setLanguage",
+      "file": "src\\analyzer.ts",
+      "line": 35
+    },
+    {
+      "from": "CodeAnalyzer.constructor",
+      "to": "setLanguage",
+      "file": "src\\analyzer.ts",
+      "line": 38
+    },
+    {
+      "from": "CodeAnalyzer.findJSFiles",
+      "to": "readdirSync",
+      "file": "src\\analyzer.ts",
+      "line": 45
+    },
+    {
+      "from": "CodeAnalyzer.findJSFiles",
+      "to": "join",
+      "file": "src\\analyzer.ts",
+      "line": 48
+    },
+    {
+      "from": "CodeAnalyzer.findJSFiles",
+      "to": "statSync",
+      "file": "src\\analyzer.ts",
+      "line": 49
+    },
+    {
+      "from": "CodeAnalyzer.findJSFiles",
+      "to": "isDirectory",
+      "file": "src\\analyzer.ts",
+      "line": 51
+    },
+    {
+      "from": "CodeAnalyzer.findJSFiles",
+      "to": "startsWith",
+      "file": "src\\analyzer.ts",
+      "line": 53
+    },
+    {
+      "from": "CodeAnalyzer.findJSFiles",
+      "to": "push",
+      "file": "src\\analyzer.ts",
+      "line": 57
+    },
+    {
+      "from": "CodeAnalyzer.findJSFiles",
+      "to": "CodeAnalyzer.findJSFiles",
+      "file": "src\\analyzer.ts",
+      "line": 57
+    },
+    {
+      "from": "CodeAnalyzer.findJSFiles",
+      "to": "endsWith",
+      "file": "src\\analyzer.ts",
+      "line": 59
+    },
+    {
+      "from": "CodeAnalyzer.findJSFiles",
+      "to": "endsWith",
+      "file": "src\\analyzer.ts",
+      "line": 60
+    },
+    {
+      "from": "CodeAnalyzer.findJSFiles",
+      "to": "endsWith",
+      "file": "src\\analyzer.ts",
+      "line": 61
+    },
+    {
+      "from": "CodeAnalyzer.findJSFiles",
+      "to": "endsWith",
+      "file": "src\\analyzer.ts",
+      "line": 62
+    },
+    {
+      "from": "CodeAnalyzer.findJSFiles",
+      "to": "push",
+      "file": "src\\analyzer.ts",
+      "line": 64
+    },
+    {
+      "from": "visit",
+      "to": "childForFieldName",
+      "file": "src\\analyzer.ts",
+      "line": 75
+    },
+    {
+      "from": "visit",
+      "to": "push",
+      "file": "src\\analyzer.ts",
+      "line": 77
+    },
+    {
+      "from": "visit",
+      "to": "childForFieldName",
+      "file": "src\\analyzer.ts",
+      "line": 87
+    },
+    {
+      "from": "visit",
+      "to": "childForFieldName",
+      "file": "src\\analyzer.ts",
+      "line": 88
+    },
+    {
+      "from": "visit",
+      "to": "push",
+      "file": "src\\analyzer.ts",
+      "line": 91
+    },
+    {
+      "from": "visit",
+      "to": "childForFieldName",
+      "file": "src\\analyzer.ts",
+      "line": 101
+    },
+    {
+      "from": "visit",
+      "to": "childForFieldName",
+      "file": "src\\analyzer.ts",
+      "line": 108
+    },
+    {
+      "from": "visit",
+      "to": "push",
+      "file": "src\\analyzer.ts",
+      "line": 117
+    },
+    {
+      "from": "visit",
+      "to": "visit",
+      "file": "src\\analyzer.ts",
+      "line": 127
+    },
+    {
+      "from": "visit",
+      "to": "child",
+      "file": "src\\analyzer.ts",
+      "line": 127
+    },
+    {
+      "from": "CodeAnalyzer.extractFunctions",
+      "to": "visit",
+      "file": "src\\analyzer.ts",
+      "line": 131
+    },
+    {
+      "from": "visit",
+      "to": "childForFieldName",
+      "file": "src\\analyzer.ts",
+      "line": 142
+    },
+    {
+      "from": "visit",
+      "to": "visit",
+      "file": "src\\analyzer.ts",
+      "line": 148
+    },
+    {
+      "from": "visit",
+      "to": "child",
+      "file": "src\\analyzer.ts",
+      "line": 148
+    },
+    {
+      "from": "visit",
+      "to": "childForFieldName",
+      "file": "src\\analyzer.ts",
+      "line": 158
+    },
+    {
+      "from": "visit",
+      "to": "visit",
+      "file": "src\\analyzer.ts",
+      "line": 164
+    },
+    {
+      "from": "visit",
+      "to": "child",
+      "file": "src\\analyzer.ts",
+      "line": 164
+    },
+    {
+      "from": "visit",
+      "to": "childForFieldName",
+      "file": "src\\analyzer.ts",
+      "line": 174
+    },
+    {
+      "from": "visit",
+      "to": "childForFieldName",
+      "file": "src\\analyzer.ts",
+      "line": 175
+    },
+    {
+      "from": "visit",
+      "to": "visit",
+      "file": "src\\analyzer.ts",
+      "line": 182
+    },
+    {
+      "from": "visit",
+      "to": "child",
+      "file": "src\\analyzer.ts",
+      "line": 182
+    },
+    {
+      "from": "visit",
+      "to": "childForFieldName",
+      "file": "src\\analyzer.ts",
+      "line": 192
+    },
+    {
+      "from": "visit",
+      "to": "visit",
+      "file": "src\\analyzer.ts",
+      "line": 198
+    },
+    {
+      "from": "visit",
+      "to": "child",
+      "file": "src\\analyzer.ts",
+      "line": 198
+    },
+    {
+      "from": "visit",
+      "to": "childForFieldName",
+      "file": "src\\analyzer.ts",
+      "line": 208
+    },
+    {
+      "from": "visit",
+      "to": "push",
+      "file": "src\\analyzer.ts",
+      "line": 211
+    },
+    {
+      "from": "visit",
+      "to": "childForFieldName",
+      "file": "src\\analyzer.ts",
+      "line": 221
+    },
+    {
+      "from": "visit",
+      "to": "childForFieldName",
+      "file": "src\\analyzer.ts",
+      "line": 224
+    },
+    {
+      "from": "visit",
+      "to": "push",
+      "file": "src\\analyzer.ts",
+      "line": 226
+    },
+    {
+      "from": "visit",
+      "to": "push",
+      "file": "src\\analyzer.ts",
+      "line": 234
+    },
+    {
+      "from": "visit",
+      "to": "visit",
+      "file": "src\\analyzer.ts",
+      "line": 247
+    },
+    {
+      "from": "visit",
+      "to": "child",
+      "file": "src\\analyzer.ts",
+      "line": 247
+    },
+    {
+      "from": "CodeAnalyzer.extractCalls",
+      "to": "visit",
+      "file": "src\\analyzer.ts",
+      "line": 251
+    },
+    {
+      "from": "CodeAnalyzer.analyzeFile",
+      "to": "readFileSync",
+      "file": "src\\analyzer.ts",
+      "line": 257
+    },
+    {
+      "from": "CodeAnalyzer.analyzeFile",
+      "to": "endsWith",
+      "file": "src\\analyzer.ts",
+      "line": 260
+    },
+    {
+      "from": "CodeAnalyzer.analyzeFile",
+      "to": "endsWith",
+      "file": "src\\analyzer.ts",
+      "line": 260
+    },
+    {
+      "from": "CodeAnalyzer.analyzeFile",
+      "to": "parse",
+      "file": "src\\analyzer.ts",
+      "line": 263
+    },
+    {
+      "from": "CodeAnalyzer.analyzeFile",
+      "to": "CodeAnalyzer.extractFunctions",
+      "file": "src\\analyzer.ts",
+      "line": 265
+    },
+    {
+      "from": "CodeAnalyzer.analyzeFile",
+      "to": "CodeAnalyzer.extractCalls",
+      "file": "src\\analyzer.ts",
+      "line": 266
+    },
+    {
+      "from": "CodeAnalyzer.analyzeFile",
+      "to": "error",
+      "file": "src\\analyzer.ts",
+      "line": 269
+    },
+    {
+      "from": "CodeAnalyzer.analyzeDirectory",
+      "to": "CodeAnalyzer.findJSFiles",
+      "file": "src\\analyzer.ts",
+      "line": 275
+    },
+    {
+      "from": "CodeAnalyzer.analyzeDirectory",
+      "to": "forEach",
+      "file": "src\\analyzer.ts",
+      "line": 278
+    },
+    {
+      "from": "CodeAnalyzer.analyzeDirectory",
+      "to": "readFileSync",
+      "file": "src\\analyzer.ts",
+      "line": 280
+    },
+    {
+      "from": "CodeAnalyzer.analyzeDirectory",
+      "to": "endsWith",
+      "file": "src\\analyzer.ts",
+      "line": 283
+    },
+    {
+      "from": "CodeAnalyzer.analyzeDirectory",
+      "to": "endsWith",
+      "file": "src\\analyzer.ts",
+      "line": 283
+    },
+    {
+      "from": "CodeAnalyzer.analyzeDirectory",
+      "to": "parse",
+      "file": "src\\analyzer.ts",
+      "line": 286
+    },
+    {
+      "from": "CodeAnalyzer.analyzeDirectory",
+      "to": "CodeAnalyzer.extractFunctions",
+      "file": "src\\analyzer.ts",
+      "line": 288
+    },
+    {
+      "from": "CodeAnalyzer.analyzeDirectory",
+      "to": "CodeAnalyzer.extractCalls",
+      "file": "src\\analyzer.ts",
+      "line": 289
+    },
+    {
+      "from": "CodeAnalyzer.analyzeDirectory",
+      "to": "error",
+      "file": "src\\analyzer.ts",
+      "line": 291
+    },
+    {
+      "from": "CodeAnalyzer.analyzeDirectory",
+      "to": "forEach",
+      "file": "src\\analyzer.ts",
+      "line": 299
+    },
+    {
+      "from": "CodeAnalyzer.analyzeDirectory",
+      "to": "addNode",
+      "file": "src\\analyzer.ts",
+      "line": 300
+    },
+    {
+      "from": "CodeAnalyzer.analyzeDirectory",
+      "to": "forEach",
+      "file": "src\\analyzer.ts",
+      "line": 303
+    },
+    {
+      "from": "CodeAnalyzer.analyzeDirectory",
+      "to": "addEdge",
+      "file": "src\\analyzer.ts",
+      "line": 304
+    },
+    {
+      "from": "CallGraph.addNode",
+      "to": "has",
+      "file": "src\\graph.ts",
+      "line": 25
+    },
+    {
+      "from": "CallGraph.addNode",
+      "to": "set",
+      "file": "src\\graph.ts",
+      "line": 26
+    },
+    {
+      "from": "CallGraph.addEdge",
+      "to": "push",
+      "file": "src\\graph.ts",
+      "line": 36
+    },
+    {
+      "from": "CallGraph.getNode",
+      "to": "get",
+      "file": "src\\graph.ts",
+      "line": 40
+    },
+    {
+      "from": "CallGraph.getCallers",
+      "to": "filter",
+      "file": "src\\graph.ts",
+      "line": 47
+    },
+    {
+      "from": "CallGraph.getCallers",
+      "to": "map",
+      "file": "src\\graph.ts",
+      "line": 46
+    },
+    {
+      "from": "CallGraph.getCallers",
+      "to": "filter",
+      "file": "src\\graph.ts",
+      "line": 45
+    },
+    {
+      "from": "CallGraph.getCallers",
+      "to": "indexOf",
+      "file": "src\\graph.ts",
+      "line": 47
+    },
+    {
+      "from": "CallGraph.getCallees",
+      "to": "filter",
+      "file": "src\\graph.ts",
+      "line": 54
+    },
+    {
+      "from": "CallGraph.getCallees",
+      "to": "map",
+      "file": "src\\graph.ts",
+      "line": 53
+    },
+    {
+      "from": "CallGraph.getCallees",
+      "to": "filter",
+      "file": "src\\graph.ts",
+      "line": 52
+    },
+    {
+      "from": "CallGraph.getCallees",
+      "to": "indexOf",
+      "file": "src\\graph.ts",
+      "line": 54
+    },
+    {
+      "from": "CallGraph.getAllNodes",
+      "to": "from",
+      "file": "src\\graph.ts",
+      "line": 58
+    },
+    {
+      "from": "CallGraph.getAllNodes",
+      "to": "values",
+      "file": "src\\graph.ts",
+      "line": 58
+    },
+    {
+      "from": "CallGraph.toJSON",
+      "to": "from",
+      "file": "src\\graph.ts",
+      "line": 67
+    },
+    {
+      "from": "CallGraph.toJSON",
+      "to": "values",
+      "file": "src\\graph.ts",
+      "line": 67
+    },
+    {
+      "from": "CallGraph.toMermaid",
+      "to": "forEach",
+      "file": "src\\graph.ts",
+      "line": 79
+    },
+    {
+      "from": "CallGraph.toMermaid",
+      "to": "add",
+      "file": "src\\graph.ts",
+      "line": 80
+    },
+    {
+      "from": "CallGraph.toMermaid",
+      "to": "forEach",
+      "file": "src\\graph.ts",
+      "line": 83
+    },
+    {
+      "from": "CallGraph.toMermaid",
+      "to": "add",
+      "file": "src\\graph.ts",
+      "line": 84
+    },
+    {
+      "from": "CallGraph.toMermaid",
+      "to": "add",
+      "file": "src\\graph.ts",
+      "line": 85
+    },
+    {
+      "from": "sanitize",
+      "to": "replace",
+      "file": "src\\graph.ts",
+      "line": 90
+    },
+    {
+      "from": "CallGraph.toMermaid",
+      "to": "forEach",
+      "file": "src\\graph.ts",
+      "line": 93
+    },
+    {
+      "from": "CallGraph.toMermaid",
+      "to": "get",
+      "file": "src\\graph.ts",
+      "line": 94
+    },
+    {
+      "from": "CallGraph.toMermaid",
+      "to": "sanitize",
+      "file": "src\\graph.ts",
+      "line": 96
+    },
+    {
+      "from": "CallGraph.toMermaid",
+      "to": "forEach",
+      "file": "src\\graph.ts",
+      "line": 105
+    },
+    {
+      "from": "CallGraph.toMermaid",
+      "to": "sanitize",
+      "file": "src\\graph.ts",
+      "line": 106
+    },
+    {
+      "from": "CallGraph.toMermaid",
+      "to": "sanitize",
+      "file": "src\\graph.ts",
+      "line": 106
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "log",
+      "file": "src\\graph.ts",
+      "line": 114
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "log",
+      "file": "src\\graph.ts",
+      "line": 115
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "log",
+      "file": "src\\graph.ts",
+      "line": 116
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "forEach",
+      "file": "src\\graph.ts",
+      "line": 120
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "set",
+      "file": "src\\graph.ts",
+      "line": 121
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "get",
+      "file": "src\\graph.ts",
+      "line": 121
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "slice",
+      "file": "src\\graph.ts",
+      "line": 126
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "sort",
+      "file": "src\\graph.ts",
+      "line": 125
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "from",
+      "file": "src\\graph.ts",
+      "line": 124
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "entries",
+      "file": "src\\graph.ts",
+      "line": 124
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "log",
+      "file": "src\\graph.ts",
+      "line": 129
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "forEach",
+      "file": "src\\graph.ts",
+      "line": 130
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "log",
+      "file": "src\\graph.ts",
+      "line": 131
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "log",
+      "file": "src\\graph.ts",
+      "line": 133
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "map",
+      "file": "src\\graph.ts",
+      "line": 137
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "filter",
+      "file": "src\\graph.ts",
+      "line": 138
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "from",
+      "file": "src\\graph.ts",
+      "line": 138
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "keys",
+      "file": "src\\graph.ts",
+      "line": 138
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "has",
+      "file": "src\\graph.ts",
+      "line": 138
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "log",
+      "file": "src\\graph.ts",
+      "line": 141
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "slice",
+      "file": "src\\graph.ts",
+      "line": 142
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "forEach",
+      "file": "src\\graph.ts",
+      "line": 143
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "log",
+      "file": "src\\graph.ts",
+      "line": 143
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "log",
+      "file": "src\\graph.ts",
+      "line": 145
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "log",
+      "file": "src\\graph.ts",
+      "line": 147
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "map",
+      "file": "src\\graph.ts",
+      "line": 151
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "filter",
+      "file": "src\\graph.ts",
+      "line": 152
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "from",
+      "file": "src\\graph.ts",
+      "line": 152
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "keys",
+      "file": "src\\graph.ts",
+      "line": 152
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "has",
+      "file": "src\\graph.ts",
+      "line": 152
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "log",
+      "file": "src\\graph.ts",
+      "line": 155
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "slice",
+      "file": "src\\graph.ts",
+      "line": 156
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "forEach",
+      "file": "src\\graph.ts",
+      "line": 157
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "log",
+      "file": "src\\graph.ts",
+      "line": 157
+    },
+    {
+      "from": "CallGraph.printStats",
+      "to": "log",
+      "file": "src\\graph.ts",
+      "line": 159
+    }
+  ]
+}

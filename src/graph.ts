@@ -4,6 +4,7 @@ export interface GraphNode {
     label: string;
     file: string;
     line: number;
+    type?: 'function' | 'arrow' | 'method' | 'async'; 
   }
   
   export interface GraphEdge {

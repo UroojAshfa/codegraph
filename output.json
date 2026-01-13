@@ -13,6 +13,48 @@
       "line": 5
     },
     {
+      "id": "User.constructor",
+      "label": "User.constructor",
+      "file": "test-files\\classes.js",
+      "line": 4
+    },
+    {
+      "id": "User.getName",
+      "label": "User.getName",
+      "file": "test-files\\classes.js",
+      "line": 8
+    },
+    {
+      "id": "User.getUpperName",
+      "label": "User.getUpperName",
+      "file": "test-files\\classes.js",
+      "line": 12
+    },
+    {
+      "id": "User.fetchProfile",
+      "label": "User.fetchProfile",
+      "file": "test-files\\classes.js",
+      "line": 16
+    },
+    {
+      "id": "User.loadData",
+      "label": "User.loadData",
+      "file": "test-files\\classes.js",
+      "line": 21
+    },
+    {
+      "id": "Admin.getRole",
+      "label": "Admin.getRole",
+      "file": "test-files\\classes.js",
+      "line": 27
+    },
+    {
+      "id": "Admin.getFullInfo",
+      "label": "Admin.getFullInfo",
+      "file": "test-files\\classes.js",
+      "line": 31
+    },
+    {
       "id": "handleUserRequest",
       "label": "handleUserRequest",
       "file": "test-files\\controllers\\userController.js",
@@ -23,6 +65,24 @@
       "label": "getUser",
       "file": "test-files\\controllers\\userController.js",
       "line": 6
+    },
+    {
+      "id": "publicHelper",
+      "label": "publicHelper",
+      "file": "test-files\\export.js",
+      "line": 4
+    },
+    {
+      "id": "privateHelper",
+      "label": "privateHelper",
+      "file": "test-files\\export.js",
+      "line": 8
+    },
+    {
+      "id": "main",
+      "label": "main",
+      "file": "test-files\\export.js",
+      "line": 19
     },
     {
       "id": "processData",
@@ -43,10 +103,52 @@
       "line": 12
     },
     {
-      "id": "main",
-      "label": "main",
-      "file": "test-files\\main.js",
-      "line": 19
+      "id": "add",
+      "label": "add",
+      "file": "test-files\\modern.js",
+      "line": 4
+    },
+    {
+      "id": "multiply",
+      "label": "multiply",
+      "file": "test-files\\modern.js",
+      "line": 5
+    },
+    {
+      "id": "calculate",
+      "label": "calculate",
+      "file": "test-files\\modern.js",
+      "line": 8
+    },
+    {
+      "id": "fetchUser",
+      "label": "fetchUser",
+      "file": "test-files\\modern.js",
+      "line": 15
+    },
+    {
+      "id": "getFromAPI",
+      "label": "getFromAPI",
+      "file": "test-files\\modern.js",
+      "line": 20
+    },
+    {
+      "id": "processUser",
+      "label": "processUser",
+      "file": "test-files\\modern.js",
+      "line": 24
+    },
+    {
+      "id": "fetchData",
+      "label": "fetchData",
+      "file": "test-files\\modern.js",
+      "line": 29
+    },
+    {
+      "id": "helper",
+      "label": "helper",
+      "file": "test-files\\modern.js",
+      "line": 35
     },
     {
       "id": "queryUser",
@@ -151,22 +253,10 @@
       "line": 8
     },
     {
-      "id": "fetchUser",
-      "label": "fetchUser",
-      "file": "test-files\\services\\userService.js",
-      "line": 1
-    },
-    {
       "id": "logInfo",
       "label": "logInfo",
       "file": "test-files\\utils\\logger.js",
       "line": 1
-    },
-    {
-      "id": "add",
-      "label": "add",
-      "file": "test-files\\utils\\math.js",
-      "line": 3
     },
     {
       "id": "subtract",
@@ -175,22 +265,10 @@
       "line": 7
     },
     {
-      "id": "multiply",
-      "label": "multiply",
-      "file": "test-files\\utils\\math.js",
-      "line": 11
-    },
-    {
       "id": "divide",
       "label": "divide",
       "file": "test-files\\utils\\math.js",
       "line": 14
-    },
-    {
-      "id": "calculate",
-      "label": "calculate",
-      "file": "test-files\\utils\\math.js",
-      "line": 18
     }
   ],
   "edges": [
@@ -205,6 +283,36 @@
       "to": "handleUserRequest",
       "file": "test-files\\app.js",
       "line": 6
+    },
+    {
+      "from": "User.getUpperName",
+      "to": "toUpperCase",
+      "file": "test-files\\classes.js",
+      "line": 13
+    },
+    {
+      "from": "User.getUpperName",
+      "to": "User.getName",
+      "file": "test-files\\classes.js",
+      "line": 13
+    },
+    {
+      "from": "User.fetchProfile",
+      "to": "User.loadData",
+      "file": "test-files\\classes.js",
+      "line": 17
+    },
+    {
+      "from": "Admin.getFullInfo",
+      "to": "Admin.getName",
+      "file": "test-files\\classes.js",
+      "line": 32
+    },
+    {
+      "from": "Admin.getFullInfo",
+      "to": "Admin.getRole",
+      "file": "test-files\\classes.js",
+      "line": 33
     },
     {
       "from": "handleUserRequest",
@@ -231,6 +339,24 @@
       "line": 8
     },
     {
+      "from": "publicHelper",
+      "to": "privateHelper",
+      "file": "test-files\\export.js",
+      "line": 5
+    },
+    {
+      "from": "main",
+      "to": "publicHelper",
+      "file": "test-files\\export.js",
+      "line": 20
+    },
+    {
+      "from": "main",
+      "to": "format",
+      "file": "test-files\\export.js",
+      "line": 21
+    },
+    {
       "from": "processData",
       "to": "formatData",
       "file": "test-files\\main.js",
@@ -243,10 +369,70 @@
       "line": 5
     },
     {
+      "from": "formatData",
+      "to": "toUpperCase",
+      "file": "test-files\\main.js",
+      "line": 9
+    },
+    {
+      "from": "formatData",
+      "to": "toString",
+      "file": "test-files\\main.js",
+      "line": 9
+    },
+    {
       "from": "main",
       "to": "processData",
       "file": "test-files\\main.js",
       "line": 21
+    },
+    {
+      "from": "main",
+      "to": "log",
+      "file": "test-files\\main.js",
+      "line": 22
+    },
+    {
+      "from": "calculate",
+      "to": "add",
+      "file": "test-files\\modern.js",
+      "line": 9
+    },
+    {
+      "from": "calculate",
+      "to": "multiply",
+      "file": "test-files\\modern.js",
+      "line": 10
+    },
+    {
+      "from": "fetchUser",
+      "to": "getFromAPI",
+      "file": "test-files\\modern.js",
+      "line": 16
+    },
+    {
+      "from": "fetchUser",
+      "to": "processUser",
+      "file": "test-files\\modern.js",
+      "line": 17
+    },
+    {
+      "from": "processUser",
+      "to": "toUpperCase",
+      "file": "test-files\\modern.js",
+      "line": 25
+    },
+    {
+      "from": "fetchData",
+      "to": "fetchUser",
+      "file": "test-files\\modern.js",
+      "line": 30
+    },
+    {
+      "from": "helper",
+      "to": "calculate",
+      "file": "test-files\\modern.js",
+      "line": 36
     },
     {
       "from": "queryUser",
@@ -319,6 +505,12 @@
       "to": "sayHello",
       "file": "test-files\\sample.js",
       "line": 3
+    },
+    {
+      "from": "sayHello",
+      "to": "log",
+      "file": "test-files\\sample.js",
+      "line": 7
     },
     {
       "from": "main",

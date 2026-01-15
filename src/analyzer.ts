@@ -29,6 +29,10 @@ export class CodeAnalyzer {
   private tsParser: Parser;
   private functions: FunctionInfo[] = [];
   private calls: FunctionCall[] = [];
+  private fileCount: number = 0; 
+  private exportedFunctions = new Set<string>();
+
+  
 
   constructor() {
     this.jsParser = new Parser();
@@ -50,7 +54,11 @@ export class CodeAnalyzer {
 
       if (stat.isDirectory()) {
         // Skip node_modules and hidden directories
-        if (item === 'node_modules' || item.startsWith('.')) {
+        if (item === 'node_modules' || 
+        item.startsWith('.') ||
+        item === 'test' || 
+        item === '__tests__' ||
+        item === 'tests') {
           continue;
         }
         // Recursively search subdirectories
@@ -81,6 +89,21 @@ export class CodeAnalyzer {
           });
         }
       }
+
+      // Handle: module.exports = IDENTIFIER
+    
+    if (node.type === 'assignment_expression') {
+      const left = node.childForFieldName('left');
+      const right = node.childForFieldName('right');
+    
+      if (
+        left?.type === 'member_expression' &&
+        left.text === 'module.exports' &&
+        right?.type === 'identifier'
+      ) {
+        this.exportedFunctions.add(right.text);
+      }
+    }
       
       // Arrow functions: const add = () => {}
       if (node.type === 'variable_declarator') {
@@ -152,6 +175,10 @@ private extractCalls(tree: Parser.Tree, filePath: string): void {
         return;
       }
     }
+
+    
+    
+
 
     // Track regular functions
     if (node.type === 'function_declaration') {
@@ -271,8 +298,9 @@ private analyzeFile(filePath: string): void {
 }
 
 public analyzeDirectory(directory: string): CallGraph {
-  // Don't print here - let CLI handle output
+  // let CLI handle output
   const files = this.findJSFiles(directory);
+  this.fileCount = files.length;
   
   // Analyze silently
   files.forEach((filePath) => {
@@ -297,13 +325,35 @@ public analyzeDirectory(directory: string): CallGraph {
   const graph = new CallGraph();
 
   this.functions.forEach(fn => {
+    if (!fn.name) {
+      console.warn(
+        `[WARN] Anonymous function ignored → ${fn.file}:${fn.line}`
+      );
+      return;
+    }
+    console.log(
+      `[FUNCTION] ${fn.name} → ${fn.file}:${fn.line}`
+    );
     graph.addNode(fn.name, fn.file, fn.line);
   });
 
   this.calls.forEach(call => {
+    if (!call.caller || !call.callee) {
+      console.warn(
+        `[WARN] Unresolved call ignored → ${call.file}:${call.line}`
+      );
+      return;
+    }
+    console.log(
+      `[CALL] ${call.caller} → ${call.callee} (${call.file}:${call.line})`
+    );
     graph.addEdge(call.caller, call.callee, call.file, call.line);
   });
 
   return graph;
+}
+
+public getFileCount(): number {
+  return this.fileCount;
 }
 }

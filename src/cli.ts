@@ -31,12 +31,14 @@ program
 
     // Start analysis with spinner
     const spinner = ora('Scanning directory...').start();
-
+ 
     try {
       const analyzer = new CodeAnalyzer();
       const graph = analyzer.analyzeDirectory(directory);
 
-      spinner.succeed(chalk.green('Analysis complete!'));
+      const fileCount = analyzer.getFileCount();
+      spinner.succeed(chalk.green(`Analysis complete! Analyzed ${fileCount} files`));
+      
 
       // Display statistics if enabled
       if (options.stats) {

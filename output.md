@@ -1,173 +1,106 @@
 ```mermaid
 graph TD
-  authenticate["authenticate"]
-  restrict["restrict"]
-  format["format"]
-  error["error"]
-  list["list"]
-  loadUser["loadUser"]
-  andRestrictToSelf["andRestrictToSelf"]
-  andRestrictTo["andRestrictTo"]
-  GithubView["GithubView"]
-  ferrets["ferrets"]
-  count["count"]
-  users["users"]
-  count2["count2"]
-  users2["users2"]
-  User["User"]
-  logerror["logerror"]
-  tryRender["tryRender"]
-  createApplication["createApplication"]
-  defineGetter["defineGetter"]
-  sendfile["sendfile"]
-  onaborted["onaborted"]
-  ondirectory["ondirectory"]
-  onerror["onerror"]
-  onend["onend"]
-  onfile["onfile"]
-  onfinish["onfinish"]
-  onstream["onstream"]
-  stringify["stringify"]
-  acceptParams["acceptParams"]
-  createETagGenerator["createETagGenerator"]
-  parseExtendedQueryString["parseExtendedQueryString"]
-  View["View"]
-  tryStat["tryStat"]
-  log["log (external)"]
-  fn["fn (external)"]
-  hash["hash (external)"]
-  next["next (external)"]
-  redirect["redirect (external)"]
-  require["require (external)"]
-  status["status (external)"]
-  send["send (external)"]
-  join["join (external)"]
-  map["map (external)"]
-  extname["extname (external)"]
-  all["all (external)"]
-  filter["filter (external)"]
-  get["get (external)"]
+  startApp["startApp"]
+  initControllers["initControllers"]
+  User_constructor["User.constructor"]
+  User_getName["User.getName"]
+  User_getUpperName["User.getUpperName"]
+  User_fetchProfile["User.fetchProfile"]
+  User_loadData["User.loadData"]
+  Admin_getRole["Admin.getRole"]
+  Admin_getFullInfo["Admin.getFullInfo"]
+  handleUserRequest["handleUserRequest"]
+  getUser["getUser"]
+  publicHelper["publicHelper"]
+  privateHelper["privateHelper"]
+  main["main"]
+  processData["processData"]
+  formatData["formatData"]
+  validateData["validateData"]
+  sqrt["sqrt"]
+  add["add"]
+  multiply["multiply"]
+  calculate["calculate"]
+  fetchUser["fetchUser"]
+  getFromAPI["getFromAPI"]
+  processUser["processUser"]
+  fetchData["fetchData"]
+  helper["helper"]
+  queryUser["queryUser"]
+  validateQuery["validateQuery"]
+  sanitizeInput["sanitizeInput"]
+  checkCache["checkCache"]
+  readCache["readCache"]
+  fetchFromDatabase["fetchFromDatabase"]
+  openConnection["openConnection"]
+  executeQuery["executeQuery"]
+  parseResult["parseResult"]
+  closeConnection["closeConnection"]
+  mapUserEntity["mapUserEntity"]
+  normalizeFields["normalizeFields"]
+  greet["greet"]
+  sayHello["sayHello"]
+  sendWelcomeEmail["sendWelcomeEmail"]
+  sendEmail["sendEmail"]
+  formatEmail["formatEmail"]
+  logInfo["logInfo"]
+  subtract["subtract"]
+  divide["divide"]
+  toUpperCase["toUpperCase (external)"]
+  Admin_getName["Admin.getName (external)"]
+  format["format (external)"]
   toString["toString (external)"]
-  render["render (external)"]
-  callback["callback (external)"]
-  handle["handle (external)"]
-  mixin["mixin (external)"]
-  create["create (external)"]
-  init["init (external)"]
-  defineProperty["defineProperty (external)"]
-  setImmediate["setImmediate (external)"]
-  on["on (external)"]
-  onFinished["onFinished (external)"]
-  keys["keys (external)"]
-  setHeader["setHeader (external)"]
-  pipe["pipe (external)"]
-  replace["replace (external)"]
-  charCodeAt["charCodeAt (external)"]
-  indexOf["indexOf (external)"]
-  trim["trim (external)"]
-  slice["slice (external)"]
-  lastIndexOf["lastIndexOf (external)"]
-  parseFloat["parseFloat (external)"]
-  isBuffer["isBuffer (external)"]
-  from["from (external)"]
-  etag["etag (external)"]
-  parse["parse (external)"]
-  debug["debug (external)"]
-  lookup["lookup (external)"]
-  statSync["statSync (external)"]
+  log["log (external)"]
 
-  authenticate --> log
-  authenticate --> fn
-  authenticate --> hash
-  authenticate --> fn
-  authenticate --> fn
-  authenticate --> fn
-  restrict --> next
-  restrict --> redirect
-  format --> require
-  format --> format
-  error --> error
-  error --> status
-  error --> send
-  list --> join
-  list --> map
-  loadUser --> next
-  loadUser --> next
-  andRestrictToSelf --> next
-  andRestrictToSelf --> next
-  andRestrictTo --> next
-  andRestrictTo --> next
-  GithubView --> extname
-  count --> count
-  count --> next
-  count --> next
-  users --> all
-  users --> next
-  users --> next
-  count2 --> count
-  count2 --> next
-  count2 --> next
-  users2 --> all
-  users2 --> next
-  users2 --> filter
-  users2 --> next
-  logerror --> get
-  logerror --> error
-  logerror --> toString
-  tryRender --> render
-  tryRender --> callback
-  createApplication --> handle
-  createApplication --> mixin
-  createApplication --> mixin
-  createApplication --> create
-  createApplication --> create
-  createApplication --> init
-  defineGetter --> defineProperty
-  onaborted --> callback
-  ondirectory --> callback
-  onerror --> callback
-  onend --> callback
-  onfinish --> onaborted
-  onfinish --> onerror
-  onfinish --> setImmediate
-  onfinish --> onaborted
-  onfinish --> callback
-  sendfile --> on
-  sendfile --> on
-  sendfile --> on
-  sendfile --> on
-  sendfile --> on
-  sendfile --> onFinished
-  sendfile --> on
-  sendfile --> keys
-  sendfile --> setHeader
-  sendfile --> pipe
-  stringify --> stringify
-  stringify --> stringify
-  stringify --> replace
-  stringify --> charCodeAt
-  acceptParams --> indexOf
-  acceptParams --> trim
-  acceptParams --> slice
-  acceptParams --> indexOf
-  acceptParams --> indexOf
-  acceptParams --> lastIndexOf
-  acceptParams --> trim
-  acceptParams --> slice
-  acceptParams --> trim
-  acceptParams --> slice
-  acceptParams --> parseFloat
-  createETagGenerator --> isBuffer
-  createETagGenerator --> from
-  createETagGenerator --> etag
-  parseExtendedQueryString --> parse
-  View --> extname
-  View --> slice
-  View --> debug
-  View --> require
-  View --> lookup
-  tryStat --> debug
-  tryStat --> statSync
+  startApp --> initControllers
+  initControllers --> handleUserRequest
+  User_getUpperName --> toUpperCase
+  User_getUpperName --> User_getName
+  User_fetchProfile --> User_loadData
+  Admin_getFullInfo --> Admin_getName
+  Admin_getFullInfo --> Admin_getRole
+  handleUserRequest --> getUser
+  handleUserRequest --> logInfo
+  getUser --> fetchUser
+  getUser --> sendWelcomeEmail
+  publicHelper --> privateHelper
+  main --> publicHelper
+  main --> format
+  processData --> formatData
+  processData --> validateData
+  formatData --> toUpperCase
+  formatData --> toString
+  main --> processData
+  main --> log
+  sqrt --> sqrt
+  calculate --> add
+  calculate --> multiply
+  fetchUser --> getFromAPI
+  fetchUser --> processUser
+  processUser --> toUpperCase
+  fetchData --> fetchUser
+  helper --> calculate
+  queryUser --> validateQuery
+  queryUser --> checkCache
+  queryUser --> fetchFromDatabase
+  queryUser --> mapUserEntity
+  validateQuery --> sanitizeInput
+  checkCache --> readCache
+  fetchFromDatabase --> openConnection
+  fetchFromDatabase --> executeQuery
+  fetchFromDatabase --> closeConnection
+  executeQuery --> parseResult
+  mapUserEntity --> normalizeFields
+  greet --> sayHello
+  sayHello --> log
+  main --> greet
+  sendWelcomeEmail --> formatEmail
+  sendWelcomeEmail --> sendEmail
+  fetchUser --> queryUser
+  calculate --> add
+  calculate --> multiply
+  calculate --> subtract
+  calculate --> divide
 ```
 
 View at: https://mermaid.live

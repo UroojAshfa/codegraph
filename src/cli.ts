@@ -35,6 +35,7 @@ program
     try {
       const analyzer = new CodeAnalyzer();
       const graph = analyzer.analyzeDirectory(directory);
+      
 
       const fileCount = analyzer.getFileCount();
       spinner.succeed(chalk.green(`Analysis complete! Analyzed ${fileCount} files`));

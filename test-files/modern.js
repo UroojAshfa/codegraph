@@ -1,4 +1,13 @@
-// test-files/modern.js
+const math = require('./utils/math');
+
+function sqrt(a, b) {
+  return math.sqrt(a, b);
+}
+
+module.exports = {
+  sqrt,
+  version: '1.0.0'
+};
 
 // Arrow functions
 const add = (a, b) => a + b;

@@ -40,7 +40,7 @@ const fetchData = async () => {
   return result;
 };
 
-// Export
+
 export const helper = () => {
   return calculate(1, 2);
 };

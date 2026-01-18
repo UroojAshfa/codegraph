@@ -466,7 +466,7 @@ public analyzeDirectory(directory: string): CallGraph {
       console.warn(`[WARN] Anonymous function ignored → ${fn.file}:${fn.line}`);
       return;
     }
-    console.log(`[FUNCTION] ${fn.name} → ${fn.file}:${fn.line}`);
+    //console.log(`[FUNCTION] ${fn.name} → ${fn.file}:${fn.line}`);
     graph.addNode(fn.name, fn.file, fn.line);
   });
 
@@ -475,7 +475,7 @@ public analyzeDirectory(directory: string): CallGraph {
       console.warn(`[WARN] Unresolved call ignored → ${call.file}:${call.line}`);
       return;
     }
-    console.log(`[CALL] ${call.caller} → ${call.callee} (${call.file}:${call.line})`);
+    //console.log(`[CALL] ${call.caller} → ${call.callee} (${call.file}:${call.line})`);
     graph.addEdge(call.caller, call.callee, call.file, call.line);
   });
 

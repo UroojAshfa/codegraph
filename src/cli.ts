@@ -5,10 +5,20 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { CodeAnalyzer } from './analyzer';
 import { AIService } from './ai';
-import * as dotenv from 'dotenv';
 
-// Load environment variables
-dotenv.config();
+// Load dotenv at the very top, silently
+try {
+  const dotenv = require('dotenv');
+  const originalWarn = console.warn;
+  const originalLog = console.log;
+  console.warn = () => {}; // Suppress warnings
+  console.log = () => {};  // Suppress logs
+  dotenv.config();
+  console.warn = originalWarn; // Restore
+  console.log = originalLog;
+} catch {
+  // Ignore if dotenv not available
+}
 
 const program = new Command();
 
@@ -17,102 +27,280 @@ program
   .description('AI-powered codebase intelligence tool')
   .version('0.1.0');
 
-// analyze command
+
+// HELPER FUNCTIONS
+
+// Simple Levenshtein distance for fuzzy matching
+function levenshteinDistance(str1: string, str2: string): number {
+  const matrix: number[][] = [];
+
+  for (let i = 0; i <= str2.length; i++) {
+    matrix[i] = [i];
+  }
+
+  for (let j = 0; j <= str1.length; j++) {
+    matrix[0][j] = j;
+  }
+
+  for (let i = 1; i <= str2.length; i++) {
+    for (let j = 1; j <= str1.length; j++) {
+      if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1, // substitution
+          matrix[i][j - 1] + 1,     // insertion
+          matrix[i - 1][j] + 1      // deletion
+        );
+      }
+    }
+  }
+
+  return matrix[str2.length][str1.length];
+}
+
+// Find closest match to a function name
+function findClosestMatch(target: string, options: string[]): string | null {
+  if (options.length === 0) return null;
+
+  let closest = options[0];
+  let minDistance = levenshteinDistance(target.toLowerCase(), closest.toLowerCase());
+
+  for (const option of options) {
+    const distance = levenshteinDistance(target.toLowerCase(), option.toLowerCase());
+    if (distance < minDistance) {
+      minDistance = distance;
+      closest = option;
+    }
+  }
+
+  // Only suggest if it's reasonably close (within 3 edits)
+  if (minDistance <= 3 && minDistance < target.length) {
+    return closest;
+  }
+
+  return null;
+}
+
+function getApiKey(): string {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    console.error(chalk.red('\n✗ GEMINI_API_KEY not found\n'));
+    console.log(chalk.yellow('To use AI features, set your API key:\n'));
+    console.log(chalk.gray('  Option 1: Create a .env file:'));
+    console.log(chalk.cyan('    GEMINI_API_KEY=your_key_here\n'));
+    console.log(chalk.gray('  Option 2: Export as environment variable:'));
+    console.log(chalk.cyan('    export GEMINI_API_KEY=your_key_here\n'));
+    console.log(chalk.gray('  Get your free API key at:'));
+    console.log(chalk.cyan('    https://makersuite.google.com/app/apikey\n'));
+    process.exit(1);
+  }
+  return apiKey;
+}
+
+function validateDirectory(directory: string): void {
+  if (!fs.existsSync(directory)) {
+    console.error(chalk.red(`\n✗ Directory not found: ${directory}\n`));
+    console.log(chalk.yellow('Make sure the path is correct and try again.\n'));
+    process.exit(1);
+  }
+
+  const stat = fs.statSync(directory);
+  if (!stat.isDirectory()) {
+    console.error(chalk.red(`\n✗ Path is not a directory: ${directory}\n`));
+    process.exit(1);
+  }
+}
+
+function validateFile(file: string): void {
+  if (!fs.existsSync(file)) {
+    console.error(chalk.red(`\n✗ File not found: ${file}\n`));
+    console.log(chalk.yellow('Make sure the path is correct and try again.\n'));
+    process.exit(1);
+  }
+
+  const stat = fs.statSync(file);
+  if (!stat.isFile()) {
+    console.error(chalk.red(`\n✗ Path is not a file: ${file}\n`));
+    process.exit(1);
+  }
+
+  const ext = path.extname(file);
+  if (!['.js', '.ts', '.jsx', '.tsx'].includes(ext)) {
+    console.error(chalk.red(`\n✗ Unsupported file type: ${ext}\n`));
+    console.log(chalk.yellow('Supported types: .js, .ts, .jsx, .tsx\n'));
+    process.exit(1);
+  }
+}
+
+function handleError(error: unknown, context: string): never {
+  console.error(chalk.red(`\n✗ ${context} failed\n`));
+  
+  if (error instanceof Error) {
+    console.error(chalk.gray(`Error: ${error.message}\n`));
+    
+    // Provide helpful suggestions based on error type
+    if (error.message.includes('ENOENT')) {
+      console.log(chalk.yellow('Tip: Check that the file or directory exists\n'));
+    } else if (error.message.includes('EACCES')) {
+      console.log(chalk.yellow('Tip: Check file permissions\n'));
+    } else if (error.message.includes('AI analysis failed')) {
+      console.log(chalk.yellow('Tip: Check your GEMINI_API_KEY or internet connection\n'));
+    }
+  } else {
+    console.error(chalk.gray(`Unknown error occurred\n`));
+  }
+  
+  process.exit(1);
+}
+
+
+// ANALYZE COMMAND (No AI needed)
+
+
 program
   .command('analyze <directory>')
   .description('Analyze a codebase and generate call graph')
-  .option('-o, --output <file>', 'Output file path', 'output.json')
+  .option('-o, --output <file>', 'Output file path', 'output')
   .option('-f, --format <type>', 'Output format (json|mermaid|both)', 'both')
   .option('--no-stats', 'Skip statistics display')
   .action((directory: string, options) => {
-    if (!fs.existsSync(directory)) {
-      console.error(chalk.red(`✗ Directory not found: ${directory}`));
-      process.exit(1);
-    }
+    console.log(chalk.bold.cyan('\n🚀 CodeGraph - Codebase Analysis\n'));
 
-    console.log(chalk.bold.cyan('\n🚀 CodeGraph v0.1.0\n'));
-    const spinner = ora('Scanning directory...').start();
+    // Validate input
+    validateDirectory(directory);
+
+    const spinner = ora('Scanning directory structure...').start();
 
     try {
       const analyzer = new CodeAnalyzer();
+      
+      spinner.text = 'Parsing source files...';
       const graph = analyzer.analyzeDirectory(directory);
 
-      spinner.succeed(chalk.green(`Analysis complete! Analyzed ${analyzer.getFileCount()} files`));
+      const fileCount = analyzer.getFileCount();
+      const nodeCount = graph.getAllNodes().length;
+      const edgeCount = graph.getAllEdges().length;
 
+      spinner.succeed(chalk.green(`Analyzed ${fileCount} files, found ${nodeCount} functions, ${edgeCount} calls`));
+
+      // Show statistics
       if (options.stats) {
         console.log('\n' + chalk.bold('📊 STATISTICS\n'));
         graph.printStats();
       }
 
-      const outputPath = path.resolve(options.output);
+      // Save outputs
+      const outputBase = path.resolve(options.output);
 
       if (options.format === 'json' || options.format === 'both') {
         const jsonOutput = graph.toJSON();
-        const jsonFile = outputPath.replace(/\.[^/.]+$/, '') + '.json';
+        const jsonFile = outputBase + '.json';
         fs.writeFileSync(jsonFile, JSON.stringify(jsonOutput, null, 2));
-        console.log(chalk.green(`\n💾 Saved JSON to ${jsonFile}`));
+        console.log(chalk.green(`\n💾 JSON saved to: ${jsonFile}`));
       }
 
       if (options.format === 'mermaid' || options.format === 'both') {
         const mermaidDiagram = graph.toMermaid();
-        const mermaidFile = outputPath.replace(/\.[^/.]+$/, '') + '.md';
-        const content = '```mermaid\n' + mermaidDiagram + '```\n\nView at: https://mermaid.live';
+        const mermaidFile = outputBase + '.md';
+        const content = `# Call Graph Visualization
+
+\`\`\`mermaid
+${mermaidDiagram}
+\`\`\`
+
+View this diagram at: https://mermaid.live
+`;
         fs.writeFileSync(mermaidFile, content);
-        console.log(chalk.green(`📊 Saved Mermaid to ${mermaidFile}`));
+        console.log(chalk.green(`📊 Mermaid diagram saved to: ${mermaidFile}`));
       }
 
-      console.log(chalk.bold.green('\n✨ Done!\n'));
+      console.log(chalk.bold.green('\n✨ Analysis complete!\n'));
+
     } catch (error) {
-      spinner.fail(chalk.red('Analysis failed'));
-      console.error(chalk.red(`\n✗ Error: ${error}`));
-      process.exit(1);
+      spinner.fail();
+      handleError(error, 'Analysis');
     }
   });
 
-// Explain command
+
+// EXPLAIN COMMAND (AI required)
+
+
 program
   .command('explain <file> <functionName>')
   .description('Get AI explanation of a specific function')
   .action(async (file: string, functionName: string) => {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      console.error(chalk.red('✗ GEMINI_API_KEY not found in environment'));
-      console.log(chalk.yellow('\nSet your API key:'));
-      console.log(chalk.gray('  export GEMINI_API_KEY=your_key'));
-      console.log(chalk.gray('  or create a .env file'));
-      process.exit(1);
-    }
-
-    if (!fs.existsSync(file)) {
-      console.error(chalk.red(`✗ File not found: ${file}`));
-      process.exit(1);
-    }
-
     console.log(chalk.bold.cyan('\n🤖 AI Function Analysis\n'));
+
+    // Validate inputs
+    validateFile(file);
+    const apiKey = getApiKey();
+
     const spinner = ora('Analyzing codebase...').start();
 
     try {
       const analyzer = new CodeAnalyzer();
       const directory = path.dirname(file);
+      
+      spinner.text = 'Building call graph...';
       const graph = analyzer.analyzeDirectory(directory);
 
+      spinner.text = 'Finding function...';
       const complexity = analyzer.getComplexity().find(c => c.name === functionName);
       
       if (!complexity) {
         spinner.fail(chalk.red(`Function "${functionName}" not found`));
+        
+        // Show available functions from the specific file
+        const normalizedFile = path.resolve(file);
+        const allFunctions = analyzer.getComplexity()
+          .filter(c => path.resolve(c.file) === normalizedFile)
+          .map(c => ({ 
+            name: c.name, 
+            complexity: c.complexity, 
+            params: c.paramCount,
+            lines: c.lineCount 
+          }));
+        
+        if (allFunctions.length > 0) {
+          const functionNames = allFunctions.map(f => f.name);
+          const closestMatch = findClosestMatch(functionName, functionNames);
+          
+          if (closestMatch) {
+            console.log(chalk.yellow(`\n💡 Did you mean: ${chalk.cyan(closestMatch)}?\n`));
+          }
+          
+          console.log(chalk.yellow(`Available functions in ${chalk.cyan(path.basename(file))}:\n`));
+          allFunctions.forEach(fn => {
+            const complexityWarning = fn.complexity > 10 ? chalk.red(' ⚠️') : chalk.green(' ✓');
+            const highlight = fn.name === closestMatch ? chalk.cyan('→ ') : '  ';
+            console.log(
+              `${highlight}${chalk.cyan(fn.name)} ` +
+              chalk.gray(`(${fn.params} params, ${fn.lines} lines, complexity: ${fn.complexity})`) +
+              complexityWarning
+            );
+          });
+          
+          console.log(chalk.gray('\nTip: Function names are case-sensitive'));
+        } else {
+          console.log(chalk.yellow('\nNo functions found in this file.'));
+        }
+        console.log();
         process.exit(1);
       }
 
       const callers = graph.getCallers(functionName);
       const callees = graph.getCallees(functionName);
 
+      // Extract function code
       const fileContent = fs.readFileSync(file, 'utf-8');
       const lines = fileContent.split('\n');
       const startLine = complexity.line - 1;
       const endLine = startLine + complexity.lineCount;
       const functionCode = lines.slice(startLine, endLine).join('\n');
 
-      spinner.text = 'Asking AI...';
+      spinner.text = 'Asking AI for analysis...';
 
       const ai = new AIService(apiKey);
       const explanation = await ai.explainFunction(
@@ -125,9 +313,10 @@ program
 
       spinner.succeed(chalk.green('Analysis complete!'));
 
+      // Display results
       console.log(chalk.bold(`\n📍 Function: ${chalk.cyan(functionName)}`));
       console.log(chalk.gray(`   Location: ${file}:${complexity.line}`));
-      console.log(chalk.gray(`   Complexity: ${complexity.complexity}`));
+      console.log(chalk.gray(`   Complexity: ${complexity.complexity} ${complexity.complexity > 10 ? '⚠️' : '✅'}`));
       console.log(chalk.gray(`   Lines: ${complexity.lineCount}`));
       console.log(chalk.gray(`   Parameters: ${complexity.paramCount}`));
       
@@ -138,12 +327,15 @@ program
       console.log(chalk.bold('\n🤖 AI Analysis:\n'));
       console.log(explanation);
 
+      // Code smell detection
+      spinner.start('Detecting code smells...');
       const smells = await ai.detectCodeSmells(
         functionCode,
         complexity.complexity,
         complexity.lineCount,
         complexity.paramCount
       );
+      spinner.stop();
 
       if (smells.length > 0 && smells[0] !== 'No obvious code smells detected ✅') {
         console.log(chalk.bold('\n⚠️  Code Smells:\n'));
@@ -161,52 +353,56 @@ program
       console.log();
 
     } catch (error) {
-      spinner.fail(chalk.red('Analysis failed'));
-      console.error(chalk.red(`\n✗ Error: ${error}`));
-      process.exit(1);
+      spinner.fail();
+      handleError(error, 'Function analysis');
     }
   });
 
-//Analyze complex functions command
+
+// ANALYZE-COMPLEX COMMAND (AI required)
+
+
 program
   .command('analyze-complex <directory>')
-  .description('Analyze all functions with complexity >10 using AI')
-  .option('-t, --threshold <number>', 'Complexity threshold (default: 10)', '10')
+  .description('Find and analyze complex functions using AI')
+  .option('-t, --threshold <number>', 'Complexity threshold', '10')
+  .option('-l, --limit <number>', 'Max functions to analyze', '10')
   .action(async (directory: string, options) => {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      console.error(chalk.red('✗ GEMINI_API_KEY not found in environment'));
-      console.log(chalk.yellow('\nSet your API key:'));
-      console.log(chalk.gray('  export GEMINI_API_KEY=your_key'));
-      console.log(chalk.gray('  or create a .env file'));
-      process.exit(1);
-    }
-
-    if (!fs.existsSync(directory)) {
-      console.error(chalk.red(`✗ Directory not found: ${directory}`));
-      process.exit(1);
-    }
-
     console.log(chalk.bold.cyan('\n🔥 AI Complexity Analysis\n'));
+
+    // Validate inputs
+    validateDirectory(directory);
+    const apiKey = getApiKey();
+    const threshold = parseInt(options.threshold);
+    const limit = parseInt(options.limit);
+
+    if (isNaN(threshold) || threshold < 1) {
+      console.error(chalk.red('✗ Threshold must be a positive number\n'));
+      process.exit(1);
+    }
+
     const spinner = ora('Analyzing codebase...').start();
 
     try {
       const analyzer = new CodeAnalyzer();
+      
+      spinner.text = 'Scanning for complex functions...';
       analyzer.analyzeDirectory(directory);
       const complexity = analyzer.getComplexity();
 
-      const threshold = parseInt(options.threshold);
       const complex = complexity
         .filter(c => c.complexity > threshold)
-        .sort((a, b) => b.complexity - a.complexity);
+        .sort((a, b) => b.complexity - a.complexity)
+        .slice(0, limit);
 
       if (complex.length === 0) {
         spinner.succeed(chalk.green(`No functions with complexity >${threshold} found!`));
-        console.log(chalk.green(`\n✅ All functions have acceptable complexity (<${threshold})\n`));
+        console.log(chalk.green(`\n✅ All ${complexity.length} functions have acceptable complexity\n`));
         return;
       }
 
-      spinner.succeed(chalk.green(`Found ${complex.length} complex functions (>${threshold})`));
+      const totalComplex = complexity.filter(c => c.complexity > threshold).length;
+      spinner.succeed(chalk.green(`Found ${totalComplex} complex functions (showing top ${complex.length})`));
 
       const ai = new AIService(apiKey);
 
@@ -219,69 +415,102 @@ program
         console.log(chalk.gray(`   Complexity: ${fn.complexity} | Lines: ${fn.lineCount} | Params: ${fn.paramCount}`));
         console.log(chalk.gray(`   Location: ${fn.file}:${fn.line}\n`));
 
-        const spinner2 = ora('Asking AI...').start();
+        const aiSpinner = ora('Asking AI...').start();
         
         try {
           const analysis = await ai.analyzeComplexity(fn.name, fn.complexity, fn.lineCount);
-          spinner2.succeed();
-          console.log(chalk.yellow(`   ${analysis}\n`));
+          aiSpinner.succeed();
+          console.log(chalk.yellow(`   💡 ${analysis}\n`));
         } catch (error) {
-          spinner2.fail(chalk.red('AI analysis failed'));
-          console.log(chalk.gray(`   (Could not get AI analysis)\n`));
+          aiSpinner.fail(chalk.red('AI request failed'));
+          console.log(chalk.gray(`   (Skipping AI analysis for this function)\n`));
         }
       }
 
-      console.log(chalk.bold.green(`✨ Analyzed ${complex.length} functions\n`));
+      console.log(chalk.bold.green(`✨ Analyzed ${complex.length} of ${totalComplex} complex functions\n`));
+
+      if (totalComplex > limit) {
+        console.log(chalk.yellow(`💡 Tip: Use --limit ${totalComplex} to analyze all complex functions\n`));
+      }
 
     } catch (error) {
-      spinner.fail(chalk.red('Analysis failed'));
-      console.error(chalk.red(`\n✗ Error: ${error}`));
-      process.exit(1);
+      spinner.fail();
+      handleError(error, 'Complexity analysis');
     }
   });
 
-//Refactoring suggestions command
+// REFACTOR COMMAND (AI required)
+
+
 program
   .command('refactor <file> <functionName>')
   .description('Get AI refactoring suggestions for a function')
   .action(async (file: string, functionName: string) => {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      console.error(chalk.red('✗ GEMINI_API_KEY not found in environment'));
-      console.log(chalk.yellow('\nSet your API key:'));
-      console.log(chalk.gray('  export GEMINI_API_KEY=your_key'));
-      console.log(chalk.gray('  or create a .env file'));
-      process.exit(1);
-    }
-
-    if (!fs.existsSync(file)) {
-      console.error(chalk.red(`✗ File not found: ${file}`));
-      process.exit(1);
-    }
-
     console.log(chalk.bold.cyan('\n🔧 AI Refactoring Suggestions\n'));
-    const spinner = ora('Analyzing...').start();
+
+    // Validate inputs
+    validateFile(file);
+    const apiKey = getApiKey();
+
+    const spinner = ora('Analyzing function...').start();
 
     try {
       const analyzer = new CodeAnalyzer();
       const directory = path.dirname(file);
+      
+      spinner.text = 'Building call graph...';
       analyzer.analyzeDirectory(directory);
 
+      spinner.text = 'Finding function...';
       const complexity = analyzer.getComplexity().find(c => c.name === functionName);
       
       if (!complexity) {
         spinner.fail(chalk.red(`Function "${functionName}" not found`));
+        
+        // Show available functions from the specific file
+        const normalizedFile = path.resolve(file);
+        const allFunctions = analyzer.getComplexity()
+          .filter(c => path.resolve(c.file) === normalizedFile)
+          .map(c => ({ 
+            name: c.name, 
+            complexity: c.complexity, 
+            params: c.paramCount,
+            lines: c.lineCount 
+          }));
+        
+        if (allFunctions.length > 0) {
+          const functionNames = allFunctions.map(f => f.name);
+          const closestMatch = findClosestMatch(functionName, functionNames);
+          
+          if (closestMatch) {
+            console.log(chalk.yellow(`\n💡 Did you mean: ${chalk.cyan(closestMatch)}?\n`));
+          }
+          
+          console.log(chalk.yellow(`Available functions in ${chalk.cyan(path.basename(file))}:\n`));
+          allFunctions.forEach(fn => {
+            const complexityWarning = fn.complexity > 10 ? chalk.red(' ⚠️') : chalk.green(' ✓');
+            const highlight = fn.name === closestMatch ? chalk.cyan('→ ') : '  ';
+            console.log(
+              `${highlight}${chalk.cyan(fn.name)} ` +
+              chalk.gray(`(${fn.params} params, ${fn.lines} lines, complexity: ${fn.complexity})`) +
+              complexityWarning
+            );
+          });
+          
+          console.log(chalk.gray('\nTip: Function names are case-sensitive'));
+        }
+        console.log();
         process.exit(1);
       }
 
-      // Read function code
+      // Extract function code
       const fileContent = fs.readFileSync(file, 'utf-8');
       const lines = fileContent.split('\n');
       const startLine = complexity.line - 1;
       const endLine = startLine + complexity.lineCount;
       const functionCode = lines.slice(startLine, endLine).join('\n');
 
-      spinner.text = 'Asking AI for refactoring suggestions...';
+      spinner.text = 'Generating refactoring suggestions...';
 
       const ai = new AIService(apiKey);
       const suggestions = await ai.suggestRefactoring(
@@ -294,7 +523,7 @@ program
 
       console.log(chalk.bold(`\n📍 Function: ${chalk.cyan(functionName)}`));
       console.log(chalk.gray(`   Location: ${file}:${complexity.line}`));
-      console.log(chalk.gray(`   Complexity: ${complexity.complexity}`));
+      console.log(chalk.gray(`   Complexity: ${complexity.complexity} ${complexity.complexity > 10 ? '⚠️' : '✅'}`));
       console.log(chalk.gray(`   Lines: ${complexity.lineCount}`));
       console.log(chalk.gray(`   Parameters: ${complexity.paramCount}\n`));
 
@@ -303,11 +532,28 @@ program
       console.log();
 
     } catch (error) {
-      spinner.fail(chalk.red('Analysis failed'));
-      console.error(chalk.red(`\n✗ Error: ${error}`));
-      process.exit(1);
+      spinner.fail();
+      handleError(error, 'Refactoring analysis');
     }
   });
+
+
+// HELP & VERSION
+
+
+program.addHelpText('after', `
+
+Examples:
+  $ codegraph analyze ./src
+  $ codegraph analyze ./src --format json --no-stats
+  $ codegraph explain ./src/utils.js calculateTotal
+  $ codegraph analyze-complex ./src --threshold 15 --limit 5
+  $ codegraph refactor ./src/complex.js processData
+
+Learn more:
+  GitHub: https://github.com/UroojAshfa/codegraph
+  
+`);
 
 program.parse(process.argv);
 

@@ -1,3 +1,5 @@
+# Call Graph Visualization
+
 ```mermaid
 graph TD
   startApp["startApp"]
@@ -101,6 +103,7 @@ graph TD
   calculate --> multiply
   calculate --> subtract
   calculate --> divide
+
 ```
 
-View at: https://mermaid.live
+View this diagram at: https://mermaid.live

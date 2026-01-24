@@ -368,7 +368,7 @@ program
   .option('-t, --threshold <number>', 'Complexity threshold', '10')
   .option('-l, --limit <number>', 'Max functions to analyze', '10')
   .action(async (directory: string, options) => {
-    console.log(chalk.bold.cyan('\n🔥 AI Complexity Analysis\n'));
+    console.log(chalk.bold.cyan('\n AI Complexity Analysis\n'));
 
     // Validate inputs
     validateDirectory(directory);
@@ -420,7 +420,7 @@ program
         try {
           const analysis = await ai.analyzeComplexity(fn.name, fn.complexity, fn.lineCount);
           aiSpinner.succeed();
-          console.log(chalk.yellow(`   💡 ${analysis}\n`));
+          console.log(chalk.yellow(`    ${analysis}\n`));
         } catch (error) {
           aiSpinner.fail(chalk.red('AI request failed'));
           console.log(chalk.gray(`   (Skipping AI analysis for this function)\n`));
@@ -430,7 +430,7 @@ program
       console.log(chalk.bold.green(`✨ Analyzed ${complex.length} of ${totalComplex} complex functions\n`));
 
       if (totalComplex > limit) {
-        console.log(chalk.yellow(`💡 Tip: Use --limit ${totalComplex} to analyze all complex functions\n`));
+        console.log(chalk.yellow(` Tip: Use --limit ${totalComplex} to analyze all complex functions\n`));
       }
 
     } catch (error) {

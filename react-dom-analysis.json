@@ -1,0 +1,1248 @@
+{
+  "nodes": [
+    {
+      "id": "checkDCE",
+      "label": "checkDCE",
+      "file": "..\\react\\packages\\react-dom\\npm\\client.js",
+      "line": 3
+    },
+    {
+      "id": "renderToString",
+      "label": "renderToString",
+      "file": "..\\react\\packages\\react-dom\\server.browser.js",
+      "line": 14
+    },
+    {
+      "id": "renderToStaticMarkup",
+      "label": "renderToStaticMarkup",
+      "file": "..\\react\\packages\\react-dom\\server.browser.js",
+      "line": 20
+    },
+    {
+      "id": "renderToReadableStream",
+      "label": "renderToReadableStream",
+      "file": "..\\react\\packages\\react-dom\\server.browser.js",
+      "line": 27
+    },
+    {
+      "id": "resume",
+      "label": "resume",
+      "file": "..\\react\\packages\\react-dom\\server.browser.js",
+      "line": 34
+    },
+    {
+      "id": "renderToPipeableStream",
+      "label": "renderToPipeableStream",
+      "file": "..\\react\\packages\\react-dom\\server.bun.js",
+      "line": 42
+    },
+    {
+      "id": "resumeToPipeableStream",
+      "label": "resumeToPipeableStream",
+      "file": "..\\react\\packages\\react-dom\\server.bun.js",
+      "line": 49
+    },
+    {
+      "id": "Unknown.if",
+      "label": "Unknown.if",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMClientFB.js",
+      "line": 80
+    },
+    {
+      "id": "handleNavigate",
+      "label": "handleNavigate",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMDefaultTransitionIndicator.js",
+      "line": 19
+    },
+    {
+      "id": "Unknown.handler",
+      "label": "Unknown.handler",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMDefaultTransitionIndicator.js",
+      "line": 22
+    },
+    {
+      "id": "handleNavigateComplete",
+      "label": "handleNavigateComplete",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMDefaultTransitionIndicator.js",
+      "line": 31
+    },
+    {
+      "id": "startFakeNavigation",
+      "label": "startFakeNavigation",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMDefaultTransitionIndicator.js",
+      "line": 53
+    },
+    {
+      "id": "ReactDOMHydrationRoot",
+      "label": "ReactDOMHydrationRoot",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRoot.js",
+      "line": 263
+    },
+    {
+      "id": "scheduleHydration",
+      "label": "scheduleHydration",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRoot.js",
+      "line": 266
+    },
+    {
+      "id": "warnIfReactDOMContainerInDEV",
+      "label": "warnIfReactDOMContainerInDEV",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRoot.js",
+      "line": 360
+    },
+    {
+      "id": "getReactRootElementInContainer",
+      "label": "getReactRootElementInContainer",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRootFB.js",
+      "line": 202
+    },
+    {
+      "id": "legacyCreateRootFromDOMContainer",
+      "label": "legacyCreateRootFromDOMContainer",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRootFB.js",
+      "line": 218
+    },
+    {
+      "id": "showErrorDialog",
+      "label": "showErrorDialog",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\__mocks__\\ReactFiberErrorDialog.js",
+      "line": 10
+    },
+    {
+      "id": "requestFormReset",
+      "label": "requestFormReset",
+      "file": "..\\react\\packages\\react-dom\\src\\ReactDOMSharedInternals.js",
+      "line": 27
+    },
+    {
+      "id": "listener",
+      "label": "listener",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerBrowser.js",
+      "line": 154
+    },
+    {
+      "id": "createDrainHandler",
+      "label": "createDrainHandler",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerNode.js",
+      "line": 48
+    },
+    {
+      "id": "createCancelHandler",
+      "label": "createCancelHandler",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerNode.js",
+      "line": 52
+    },
+    {
+      "id": "Unknown.end",
+      "label": "Unknown.end",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerNode.js",
+      "line": 182
+    },
+    {
+      "id": "Unknown.destroy",
+      "label": "Unknown.destroy",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerNode.js",
+      "line": 185
+    },
+    {
+      "id": "Unknown.return",
+      "label": "Unknown.return",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 78
+    },
+    {
+      "id": "Unknown.write",
+      "label": "Unknown.write",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 106
+    },
+    {
+      "id": "onAllReady",
+      "label": "onAllReady",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 125
+    },
+    {
+      "id": "Unknown.read",
+      "label": "Unknown.read",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 127
+    },
+    {
+      "id": "onError",
+      "label": "onError",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMLegacyServerImpl.js",
+      "line": 31
+    },
+    {
+      "id": "renderToStringImpl",
+      "label": "renderToStringImpl",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMLegacyServerImpl.js",
+      "line": 35
+    },
+    {
+      "id": "Unknown.push",
+      "label": "Unknown.push",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMLegacyServerImpl.js",
+      "line": 46
+    },
+    {
+      "id": "onShellReady",
+      "label": "onShellReady",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMLegacyServerImpl.js",
+      "line": 60
+    },
+    {
+      "id": "ensureCorrectIsomorphicReactVersion",
+      "label": "ensureCorrectIsomorphicReactVersion",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ensureCorrectIsomorphicReactVersion.js",
+      "line": 13
+    },
+    {
+      "id": "Unknown.React$Portal",
+      "label": "Unknown.React$Portal",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOM.js",
+      "line": 60
+    },
+    {
+      "id": "prefetchDNS",
+      "label": "prefetchDNS",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 24
+    },
+    {
+      "id": "preconnect",
+      "label": "preconnect",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 58
+    },
+    {
+      "id": "preload",
+      "label": "preload",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 89
+    },
+    {
+      "id": "preloadModule",
+      "label": "preloadModule",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 153
+    },
+    {
+      "id": "preinit",
+      "label": "preinit",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 205
+    },
+    {
+      "id": "preinitModule",
+      "label": "preinitModule",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 262
+    },
+    {
+      "id": "getValueDescriptorExpectingObjectForWarning",
+      "label": "getValueDescriptorExpectingObjectForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 335
+    },
+    {
+      "id": "getValueDescriptorExpectingEnumForWarning",
+      "label": "getValueDescriptorExpectingEnumForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 345
+    },
+    {
+      "id": "act",
+      "label": "act",
+      "file": "..\\react\\packages\\react-dom\\src\\test-utils\\ReactTestUtils.js",
+      "line": 13
+    },
+    {
+      "id": "prerenderToNodeStream",
+      "label": "prerenderToNodeStream",
+      "file": "..\\react\\packages\\react-dom\\static.node.js",
+      "line": 14
+    },
+    {
+      "id": "prerender",
+      "label": "prerender",
+      "file": "..\\react\\packages\\react-dom\\static.node.js",
+      "line": 21
+    },
+    {
+      "id": "resumeAndPrerenderToNodeStream",
+      "label": "resumeAndPrerenderToNodeStream",
+      "file": "..\\react\\packages\\react-dom\\static.node.js",
+      "line": 28
+    },
+    {
+      "id": "resumeAndPrerender",
+      "label": "resumeAndPrerender",
+      "file": "..\\react\\packages\\react-dom\\static.node.js",
+      "line": 35
+    }
+  ],
+  "edges": [
+    {
+      "from": "checkDCE",
+      "to": "checkDCE",
+      "file": "..\\react\\packages\\react-dom\\npm\\client.js",
+      "line": 23
+    },
+    {
+      "from": "checkDCE",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\npm\\client.js",
+      "line": 27
+    },
+    {
+      "from": "checkDCE",
+      "to": "checkDCE",
+      "file": "..\\react\\packages\\react-dom\\npm\\index.js",
+      "line": 23
+    },
+    {
+      "from": "checkDCE",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\npm\\index.js",
+      "line": 27
+    },
+    {
+      "from": "checkDCE",
+      "to": "checkDCE",
+      "file": "..\\react\\packages\\react-dom\\npm\\profiling.js",
+      "line": 23
+    },
+    {
+      "from": "checkDCE",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\npm\\profiling.js",
+      "line": 27
+    },
+    {
+      "from": "checkDCE",
+      "to": "checkDCE",
+      "file": "..\\react\\packages\\react-dom\\npm\\unstable_testing.js",
+      "line": 23
+    },
+    {
+      "from": "checkDCE",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\npm\\unstable_testing.js",
+      "line": 27
+    },
+    {
+      "from": "renderToString",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.browser.js",
+      "line": 15
+    },
+    {
+      "from": "renderToString",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.browser.js",
+      "line": 15
+    },
+    {
+      "from": "renderToStaticMarkup",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.browser.js",
+      "line": 21
+    },
+    {
+      "from": "renderToStaticMarkup",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.browser.js",
+      "line": 21
+    },
+    {
+      "from": "renderToReadableStream",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.browser.js",
+      "line": 28
+    },
+    {
+      "from": "renderToReadableStream",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.browser.js",
+      "line": 28
+    },
+    {
+      "from": "resume",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.browser.js",
+      "line": 35
+    },
+    {
+      "from": "resume",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.browser.js",
+      "line": 35
+    },
+    {
+      "from": "renderToReadableStream",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.bun.js",
+      "line": 15
+    },
+    {
+      "from": "renderToReadableStream",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.bun.js",
+      "line": 15
+    },
+    {
+      "from": "renderToString",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.bun.js",
+      "line": 22
+    },
+    {
+      "from": "renderToString",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.bun.js",
+      "line": 22
+    },
+    {
+      "from": "renderToStaticMarkup",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.bun.js",
+      "line": 29
+    },
+    {
+      "from": "renderToStaticMarkup",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.bun.js",
+      "line": 29
+    },
+    {
+      "from": "resume",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.bun.js",
+      "line": 36
+    },
+    {
+      "from": "resume",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.bun.js",
+      "line": 36
+    },
+    {
+      "from": "renderToPipeableStream",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.bun.js",
+      "line": 43
+    },
+    {
+      "from": "renderToPipeableStream",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.bun.js",
+      "line": 43
+    },
+    {
+      "from": "resumeToPipeableStream",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.bun.js",
+      "line": 50
+    },
+    {
+      "from": "resumeToPipeableStream",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.bun.js",
+      "line": 50
+    },
+    {
+      "from": "renderToReadableStream",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.edge.js",
+      "line": 15
+    },
+    {
+      "from": "renderToReadableStream",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.edge.js",
+      "line": 15
+    },
+    {
+      "from": "renderToString",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.edge.js",
+      "line": 22
+    },
+    {
+      "from": "renderToString",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.edge.js",
+      "line": 22
+    },
+    {
+      "from": "renderToStaticMarkup",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.edge.js",
+      "line": 29
+    },
+    {
+      "from": "renderToStaticMarkup",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.edge.js",
+      "line": 29
+    },
+    {
+      "from": "resume",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.edge.js",
+      "line": 36
+    },
+    {
+      "from": "resume",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.edge.js",
+      "line": 36
+    },
+    {
+      "from": "renderToString",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.node.js",
+      "line": 15
+    },
+    {
+      "from": "renderToString",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.node.js",
+      "line": 15
+    },
+    {
+      "from": "renderToStaticMarkup",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.node.js",
+      "line": 21
+    },
+    {
+      "from": "renderToStaticMarkup",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.node.js",
+      "line": 21
+    },
+    {
+      "from": "renderToPipeableStream",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.node.js",
+      "line": 28
+    },
+    {
+      "from": "renderToPipeableStream",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.node.js",
+      "line": 28
+    },
+    {
+      "from": "resumeToPipeableStream",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.node.js",
+      "line": 35
+    },
+    {
+      "from": "resumeToPipeableStream",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.node.js",
+      "line": 35
+    },
+    {
+      "from": "renderToReadableStream",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.node.js",
+      "line": 42
+    },
+    {
+      "from": "renderToReadableStream",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.node.js",
+      "line": 42
+    },
+    {
+      "from": "resume",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\server.node.js",
+      "line": 49
+    },
+    {
+      "from": "resume",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\server.node.js",
+      "line": 49
+    },
+    {
+      "from": "handleNavigate",
+      "to": "intercept",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMDefaultTransitionIndicator.js",
+      "line": 21
+    },
+    {
+      "from": "handleNavigateComplete",
+      "to": "pendingResolve",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMDefaultTransitionIndicator.js",
+      "line": 35
+    },
+    {
+      "from": "handleNavigateComplete",
+      "to": "setTimeout",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMDefaultTransitionIndicator.js",
+      "line": 42
+    },
+    {
+      "from": "startFakeNavigation",
+      "to": "navigate",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMDefaultTransitionIndicator.js",
+      "line": 66
+    },
+    {
+      "from": "startFakeNavigation",
+      "to": "getState",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMDefaultTransitionIndicator.js",
+      "line": 67
+    },
+    {
+      "from": "scheduleHydration",
+      "to": "queueExplicitHydrationTarget",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRoot.js",
+      "line": 268
+    },
+    {
+      "from": "warnIfReactDOMContainerInDEV",
+      "to": "isContainerMarkedAsRoot",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRoot.js",
+      "line": 362
+    },
+    {
+      "from": "warnIfReactDOMContainerInDEV",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRoot.js",
+      "line": 364
+    },
+    {
+      "from": "warnIfReactDOMContainerInDEV",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRoot.js",
+      "line": 369
+    },
+    {
+      "from": "legacyCreateRootFromDOMContainer",
+      "to": "parentComponent",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRootFB.js",
+      "line": 221
+    },
+    {
+      "from": "legacyCreateRootFromDOMContainer",
+      "to": "getPublicRootInstance",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRootFB.js",
+      "line": 229
+    },
+    {
+      "from": "legacyCreateRootFromDOMContainer",
+      "to": "call",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRootFB.js",
+      "line": 230
+    },
+    {
+      "from": "legacyCreateRootFromDOMContainer",
+      "to": "createHydrationContainer",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRootFB.js",
+      "line": 234
+    },
+    {
+      "from": "legacyCreateRootFromDOMContainer",
+      "to": "markContainerAsRoot",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRootFB.js",
+      "line": 252
+    },
+    {
+      "from": "legacyCreateRootFromDOMContainer",
+      "to": "listenToAllSupportedEvents",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRootFB.js",
+      "line": 259
+    },
+    {
+      "from": "legacyCreateRootFromDOMContainer",
+      "to": "flushSyncWork",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRootFB.js",
+      "line": 261
+    },
+    {
+      "from": "legacyCreateRootFromDOMContainer",
+      "to": "getPublicRootInstance",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRootFB.js",
+      "line": 270
+    },
+    {
+      "from": "legacyCreateRootFromDOMContainer",
+      "to": "call",
+      "file": "..\\react\\packages\\react-dom\\src\\client\\ReactDOMRootFB.js",
+      "line": 271
+    },
+    {
+      "from": "listener",
+      "to": "abort",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerBrowser.js",
+      "line": 155
+    },
+    {
+      "from": "listener",
+      "to": "removeEventListener",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerBrowser.js",
+      "line": 156
+    },
+    {
+      "from": "listener",
+      "to": "abort",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerBrowser.js",
+      "line": 223
+    },
+    {
+      "from": "listener",
+      "to": "removeEventListener",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerBrowser.js",
+      "line": 224
+    },
+    {
+      "from": "listener",
+      "to": "abort",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerBun.js",
+      "line": 145
+    },
+    {
+      "from": "listener",
+      "to": "removeEventListener",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerBun.js",
+      "line": 146
+    },
+    {
+      "from": "listener",
+      "to": "abort",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerEdge.js",
+      "line": 155
+    },
+    {
+      "from": "listener",
+      "to": "removeEventListener",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerEdge.js",
+      "line": 156
+    },
+    {
+      "from": "listener",
+      "to": "abort",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerEdge.js",
+      "line": 223
+    },
+    {
+      "from": "listener",
+      "to": "removeEventListener",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerEdge.js",
+      "line": 224
+    },
+    {
+      "from": "createDrainHandler",
+      "to": "startFlowing",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerNode.js",
+      "line": 49
+    },
+    {
+      "from": "createCancelHandler",
+      "to": "stopFlowing",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerNode.js",
+      "line": 54
+    },
+    {
+      "from": "createCancelHandler",
+      "to": "abort",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerNode.js",
+      "line": 56
+    },
+    {
+      "from": "listener",
+      "to": "abort",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerNode.js",
+      "line": 292
+    },
+    {
+      "from": "listener",
+      "to": "removeEventListener",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerNode.js",
+      "line": 293
+    },
+    {
+      "from": "listener",
+      "to": "abort",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerNode.js",
+      "line": 427
+    },
+    {
+      "from": "listener",
+      "to": "removeEventListener",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzServerNode.js",
+      "line": 428
+    },
+    {
+      "from": "onAllReady",
+      "to": "startFlowing",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 128
+    },
+    {
+      "from": "onAllReady",
+      "to": "createFakeWritableFromReadable",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 131
+    },
+    {
+      "from": "onAllReady",
+      "to": "getPostponedState",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 135
+    },
+    {
+      "from": "onAllReady",
+      "to": "resolve",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 141
+    },
+    {
+      "from": "listener",
+      "to": "abort",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 175
+    },
+    {
+      "from": "listener",
+      "to": "removeEventListener",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 176
+    },
+    {
+      "from": "onAllReady",
+      "to": "startFlowing",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 295
+    },
+    {
+      "from": "onAllReady",
+      "to": "createFakeWritableFromReadable",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 298
+    },
+    {
+      "from": "onAllReady",
+      "to": "getPostponedState",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 301
+    },
+    {
+      "from": "onAllReady",
+      "to": "resolve",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 304
+    },
+    {
+      "from": "listener",
+      "to": "abort",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 322
+    },
+    {
+      "from": "listener",
+      "to": "removeEventListener",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMFizzStaticNode.js",
+      "line": 323
+    },
+    {
+      "from": "renderToStringImpl",
+      "to": "createResumableState",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMLegacyServerImpl.js",
+      "line": 63
+    },
+    {
+      "from": "renderToStringImpl",
+      "to": "createRequest",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMLegacyServerImpl.js",
+      "line": 67
+    },
+    {
+      "from": "renderToStringImpl",
+      "to": "createRenderState",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMLegacyServerImpl.js",
+      "line": 70
+    },
+    {
+      "from": "renderToStringImpl",
+      "to": "createRootFormatContext",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMLegacyServerImpl.js",
+      "line": 71
+    },
+    {
+      "from": "renderToStringImpl",
+      "to": "startWork",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMLegacyServerImpl.js",
+      "line": 80
+    },
+    {
+      "from": "renderToStringImpl",
+      "to": "abort",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMLegacyServerImpl.js",
+      "line": 83
+    },
+    {
+      "from": "renderToStringImpl",
+      "to": "startFlowing",
+      "file": "..\\react\\packages\\react-dom\\src\\server\\ReactDOMLegacyServerImpl.js",
+      "line": 84
+    },
+    {
+      "from": "prefetchDNS",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 27
+    },
+    {
+      "from": "prefetchDNS",
+      "to": "getValueDescriptorExpectingObjectForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 29
+    },
+    {
+      "from": "prefetchDNS",
+      "to": "hasOwnProperty",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 35
+    },
+    {
+      "from": "prefetchDNS",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 37
+    },
+    {
+      "from": "prefetchDNS",
+      "to": "getValueDescriptorExpectingEnumForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 39
+    },
+    {
+      "from": "prefetchDNS",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 42
+    },
+    {
+      "from": "prefetchDNS",
+      "to": "getValueDescriptorExpectingEnumForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 44
+    },
+    {
+      "from": "prefetchDNS",
+      "to": "D",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 51
+    },
+    {
+      "from": "preconnect",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 61
+    },
+    {
+      "from": "preconnect",
+      "to": "getValueDescriptorExpectingObjectForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 63
+    },
+    {
+      "from": "preconnect",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 66
+    },
+    {
+      "from": "preconnect",
+      "to": "getValueDescriptorExpectingEnumForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 68
+    },
+    {
+      "from": "preconnect",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 71
+    },
+    {
+      "from": "preconnect",
+      "to": "getValueDescriptorExpectingObjectForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 73
+    },
+    {
+      "from": "preconnect",
+      "to": "getCrossOriginString",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 79
+    },
+    {
+      "from": "preconnect",
+      "to": "C",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 82
+    },
+    {
+      "from": "preload",
+      "to": "getValueDescriptorExpectingObjectForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 93
+    },
+    {
+      "from": "preload",
+      "to": "getValueDescriptorExpectingObjectForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 98
+    },
+    {
+      "from": "preload",
+      "to": "getValueDescriptorExpectingObjectForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 102
+    },
+    {
+      "from": "preload",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 107
+    },
+    {
+      "from": "preload",
+      "to": "getCrossOriginStringAs",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 121
+    },
+    {
+      "from": "preload",
+      "to": "L",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 123
+    },
+    {
+      "from": "preloadModule",
+      "to": "getValueDescriptorExpectingObjectForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 157
+    },
+    {
+      "from": "preloadModule",
+      "to": "getValueDescriptorExpectingObjectForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 162
+    },
+    {
+      "from": "preloadModule",
+      "to": "getValueDescriptorExpectingObjectForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 166
+    },
+    {
+      "from": "preloadModule",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 171
+    },
+    {
+      "from": "preloadModule",
+      "to": "getCrossOriginStringAs",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 179
+    },
+    {
+      "from": "preloadModule",
+      "to": "m",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 184
+    },
+    {
+      "from": "preloadModule",
+      "to": "m",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 197
+    },
+    {
+      "from": "preinit",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 208
+    },
+    {
+      "from": "preinit",
+      "to": "getValueDescriptorExpectingObjectForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 210
+    },
+    {
+      "from": "preinit",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 213
+    },
+    {
+      "from": "preinit",
+      "to": "getValueDescriptorExpectingEnumForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 215
+    },
+    {
+      "from": "preinit",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 218
+    },
+    {
+      "from": "preinit",
+      "to": "getValueDescriptorExpectingEnumForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 220
+    },
+    {
+      "from": "preinit",
+      "to": "getCrossOriginStringAs",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 226
+    },
+    {
+      "from": "preinit",
+      "to": "S",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 235
+    },
+    {
+      "from": "preinit",
+      "to": "X",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 249
+    },
+    {
+      "from": "preinitModule",
+      "to": "getValueDescriptorExpectingObjectForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 266
+    },
+    {
+      "from": "preinitModule",
+      "to": "getValueDescriptorExpectingObjectForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 271
+    },
+    {
+      "from": "preinitModule",
+      "to": "getValueDescriptorExpectingEnumForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 275
+    },
+    {
+      "from": "preinitModule",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 280
+    },
+    {
+      "from": "preinitModule",
+      "to": "getValueDescriptorExpectingEnumForWarning",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 294
+    },
+    {
+      "from": "preinitModule",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 295
+    },
+    {
+      "from": "preinitModule",
+      "to": "getCrossOriginStringAs",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 310
+    },
+    {
+      "from": "preinitModule",
+      "to": "M",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 315
+    },
+    {
+      "from": "preinitModule",
+      "to": "M",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 327
+    },
+    {
+      "from": "getValueDescriptorExpectingEnumForWarning",
+      "to": "stringify",
+      "file": "..\\react\\packages\\react-dom\\src\\shared\\ReactDOMFloat.js",
+      "line": 353
+    },
+    {
+      "from": "act",
+      "to": "error",
+      "file": "..\\react\\packages\\react-dom\\src\\test-utils\\ReactTestUtils.js",
+      "line": 16
+    },
+    {
+      "from": "act",
+      "to": "act",
+      "file": "..\\react\\packages\\react-dom\\src\\test-utils\\ReactTestUtils.js",
+      "line": 22
+    },
+    {
+      "from": "prerenderToNodeStream",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\static.node.js",
+      "line": 15
+    },
+    {
+      "from": "prerenderToNodeStream",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\static.node.js",
+      "line": 15
+    },
+    {
+      "from": "prerender",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\static.node.js",
+      "line": 22
+    },
+    {
+      "from": "prerender",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\static.node.js",
+      "line": 22
+    },
+    {
+      "from": "resumeAndPrerenderToNodeStream",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\static.node.js",
+      "line": 29
+    },
+    {
+      "from": "resumeAndPrerenderToNodeStream",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\static.node.js",
+      "line": 29
+    },
+    {
+      "from": "resumeAndPrerender",
+      "to": "apply",
+      "file": "..\\react\\packages\\react-dom\\static.node.js",
+      "line": 36
+    },
+    {
+      "from": "resumeAndPrerender",
+      "to": "require",
+      "file": "..\\react\\packages\\react-dom\\static.node.js",
+      "line": 36
+    }
+  ]
+}

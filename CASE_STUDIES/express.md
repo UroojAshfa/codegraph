@@ -20,13 +20,13 @@ Real-world analysis of production codebases.
 | Average Complexity | 3.3 |
 | Max Complexity | 14 (sendfile) |
 | Files with Imports | 3 |
-| Circular Dependencies | 0 ✅ |
+| Circular Dependencies | 0 |
 
-### 🚨 Critical Finding: sendfile Function
+###  Critical Finding: sendfile Function
 
 **Location:** `lib/response.js:927`  
-**Complexity:** 14 (⚠️ Exceeds threshold of 10)  
-**Lines:** 89 (⚠️ Should be <50)  
+**Complexity:** 14 ( Exceeds threshold of 10)  
+**Lines:** 89 ( Should be <50)  
 
 **Why this matters:**
 - Research shows functions with complexity >10 have 2x more bugs
@@ -60,7 +60,7 @@ streamFile()           // Actual streaming
 ./response ← 1 import
 ```
 
-**No circular dependencies found** ✅ - Clean architecture
+**No circular dependencies found**  - Clean architecture
 
 ### ⚡ Complexity Distribution
 
@@ -114,7 +114,7 @@ streamFile()           // Actual streaming
    - Higher complexity than modern frameworks
    - Traditional function syntax
 
-### 📊 Framework Comparison
+###  Framework Comparison
 
 | Framework | Avg Complexity | Max Complexity | Primary Pattern |
 |-----------|----------------|----------------|-----------------|
@@ -124,7 +124,7 @@ streamFile()           // Actual streaming
 
 Express shows its age with higher complexity scores.
 
-### 🎯 Recommendations
+###  Recommendations
 
 **Immediate Actions:**
 1. Refactor `sendfile` (split into 3 functions)

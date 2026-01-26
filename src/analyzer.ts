@@ -117,18 +117,58 @@ export class CodeAnalyzer {
 
       // Handle: module.exports = IDENTIFIER
     
-    if (node.type === 'assignment_expression') {
-      const left = node.childForFieldName('left');
-      const right = node.childForFieldName('right');
-    
-      if (
-        left?.type === 'member_expression' &&
-        left.text === 'module.exports' &&
-        right?.type === 'identifier'
-      ) {
-        this.exportedFunctions.add(right.text);
+    // In extractFunctions method, replace the assignment_expression block with this:
+
+if (node.type === 'assignment_expression') {
+  const left = node.childForFieldName('left');
+  const right = node.childForFieldName('right');
+
+  // Handle: module.exports = IDENTIFIER 
+  if (
+    left?.type === 'member_expression' &&
+    left.text === 'module.exports' &&
+    right?.type === 'identifier'
+  ) {
+    this.exportedFunctions.add(right.text);
+  }
+
+  //Handle method/function assignments
+  if (right && (
+    right.type === 'function' || 
+    right.type === 'function_expression' ||
+    right.type === 'arrow_function'
+  )) {
+    // Case 1: obj.method = function() {} or obj.method = () => {}
+    if (left && left.type === 'member_expression') {
+      const propertyNode = left.childForFieldName('property');
+      const objectNode = left.childForFieldName('object');
+      
+      if (propertyNode && objectNode) {
+        // Create qualified name: "res.send" not just "send"
+        const functionName = `${objectNode.text}.${propertyNode.text}`;
+        
+        this.functions.push({
+          name: functionName,
+          file: filePath,
+          line: propertyNode.startPosition.row + 1
+        });
+        
+        // Calculate complexity 
+        this.calculateComplexity(right, functionName, filePath);
       }
     }
+    // Case 2: simple assignment
+    // 
+    else if (left && left.type === 'identifier') {
+      this.functions.push({
+        name: left.text,
+        file: filePath,
+        line: left.startPosition.row + 1
+      });
+      this.calculateComplexity(right, left.text, filePath);
+    }
+  }
+}
       
       // Arrow functions: const add = () => {}
       if (node.type === 'variable_declarator') {

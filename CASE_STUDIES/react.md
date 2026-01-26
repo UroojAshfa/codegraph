@@ -230,34 +230,34 @@ Code gets more attention (and refactoring) when it's widely used or performance-
 
 ### Confident Claims (Backed by Real Data):
 
-✅ **React maintains different complexity standards by use case**
+ **React maintains different complexity standards by use case**
 - Server rendering: 1.6 (run millions of times)
 - Client rendering: 2.8 (run thousands of times)
 - Core API: 6.3 (public-facing)
 - Internal utilities: 8.6 (internal use)
 - Compiler: 82 max (build-time only)
 
-✅ **React 17 actively simplified production runtime**
+ **React 17 actively simplified production runtime**
 - 65% reduction in production JSX path
 - Shows ongoing investment in runtime performance
 
-✅ **Compiler has concentrated complexity**
+ **Compiler has concentrated complexity**
 - 24.5% of functions >10 complexity
 - But average (5.0) is reasonable
 - Max (82) is very high for any codebase
 
-✅ **No circular dependencies across all packages**
+ **No circular dependencies across all packages**
 - Shows architectural discipline
 
 ---
 
 ### Speculative Claims (Can't Prove):
 
-⚠️ "This is a deliberate architectural strategy"
+ "This is a deliberate architectural strategy"
 - Correlation suggests intent, but we don't have design docs
 - Could be evolved practice rather than planned strategy
 
-⚠️ "React optimizes for hot paths"
+ "React optimizes for hot paths"
 - Data strongly suggests this, but intent unknown
 - Could be natural result of performance focus
 

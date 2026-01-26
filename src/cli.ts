@@ -5,6 +5,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { CodeAnalyzer } from './analyzer';
 import { AIService } from './ai';
+import { BatchAnalyzer } from './batch-analyzer';
+
 
 // Load dotenv at the very top, silently
 try {
@@ -436,6 +438,88 @@ program
     } catch (error) {
       spinner.fail();
       handleError(error, 'Complexity analysis');
+    }
+  });
+
+  program
+  .command('batch-explain <directory>')
+  .description('Automatically analyze all complex functions with AI')
+  .option('-t, --threshold <number>', 'Complexity threshold', '10')
+  .option('-l, --limit <number>', 'Max functions to analyze', '20')
+  .option('-o, --output <file>', 'Output file base name', 'batch-analysis')
+  .action(async (directory: string, options) => {
+    console.log(chalk.bold.cyan('\n🔍 CodeGraph - Batch Analysis\n'));
+
+    // Validate inputs
+    validateDirectory(directory);
+    const apiKey = getApiKey();
+    const threshold = parseInt(options.threshold);
+    const limit = parseInt(options.limit);
+
+    if (isNaN(threshold) || threshold < 1) {
+      console.error(chalk.red('✗ Threshold must be a positive number\n'));
+      process.exit(1);
+    }
+
+    if (isNaN(limit) || limit < 1) {
+      console.error(chalk.red('✗ Limit must be a positive number\n'));
+      process.exit(1);
+    }
+
+    const spinner = ora('Analyzing codebase...').start();
+
+    try {
+      // Step 1: Analyze the codebase
+      const analyzer = new CodeAnalyzer();
+      
+      spinner.text = 'Scanning directory structure...';
+      const graph = analyzer.analyzeDirectory(directory);
+      
+      const fileCount = analyzer.getFileCount();
+      const complexity = analyzer.getComplexity();
+      const totalFunctions = complexity.length;
+
+      spinner.succeed(chalk.green(`Analyzed ${fileCount} files, found ${totalFunctions} functions`));
+
+      // Check if there are complex functions
+      const complexFunctions = complexity.filter(c => c.complexity > threshold);
+      
+      if (complexFunctions.length === 0) {
+        console.log(chalk.green(`\n✅ No functions with complexity >${threshold} found!`));
+        console.log(chalk.green(`All ${totalFunctions} functions have acceptable complexity\n`));
+        return;
+      }
+
+      // Step 2: Batch analyze with AI
+      const batchAnalyzer = new BatchAnalyzer(apiKey);
+      const projectName = path.basename(directory);
+      
+      const result = await batchAnalyzer.analyzeBatch(
+        complexity,
+        threshold,
+        limit,
+        projectName,
+        fileCount,
+        totalFunctions
+      );
+
+      // Step 3: Save results
+      const outputBase = path.resolve(options.output);
+      await batchAnalyzer.saveResults(result, outputBase);
+
+      console.log(chalk.bold.green('\n✨ Batch analysis complete!\n'));
+
+      // Show next steps
+      if (result.summary.criticalIssues > 0) {
+        console.log(chalk.yellow('💡 Next steps:'));
+        console.log(chalk.yellow(`   1. Review the ${result.summary.criticalIssues} critical functions`));
+        console.log(chalk.yellow(`   2. Check the report: ${outputBase}.md`));
+        console.log(chalk.yellow(`   3. Use 'codegraph refactor' for specific functions\n`));
+      }
+
+    } catch (error) {
+      spinner.fail();
+      handleError(error, 'Batch analysis');
     }
   });
 

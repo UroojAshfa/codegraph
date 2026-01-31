@@ -31,7 +31,7 @@ Created systematic test suites to validate CodeGraph's parser. Found **5 critica
 
 ## Critical Bugs (Fix Immediately)
 
-### 🔴 Bug #1: Class Methods Not Detected
+###  Bug #1: Class Methods Not Detected
 **Status:** Confirmed - 0% detection rate  
 **Severity:** CRITICAL  
 **Impact:** Missing 40+ methods in own codebase
@@ -39,11 +39,11 @@ Created systematic test suites to validate CodeGraph's parser. Found **5 critica
 **Test Case:**
 ```typescript
 class MyClass {
-  regularMethod() {}      // ❌ Not detected
-  asyncMethod() {}        // ❌ Not detected
-  static staticMethod() {} // ❌ Not detected
-  get myGetter() {}       // ❌ Not detected
-  private privateMethod() {} // ❌ Not detected
+  regularMethod() {}      // Not detected
+  asyncMethod() {}        // Not detected
+  static staticMethod() {} // Not detected
+  get myGetter() {}       // Not detected
+  private privateMethod() {} // Not detected
 }
 ```
 
@@ -56,7 +56,7 @@ class MyClass {
 
 ---
 
-### 🔴 Bug #2: Ternary Operators Not Counted
+###  Bug #2: Ternary Operators Not Counted
 **Status:** Confirmed  
 **Severity:** CRITICAL  
 **Impact:** Massive undercount of complexity in modern codebases
@@ -81,7 +81,7 @@ function ternaries(x: number) {
 
 ---
 
-### 🔴 Bug #3: Switch Cases Not Counted
+###  Bug #3: Switch Cases Not Counted
 **Status:** Confirmed  
 **Severity:** CRITICAL  
 **Impact:** Switch-heavy code appears deceptively simple
@@ -112,7 +112,7 @@ function switchStatement(x: string) {
 
 ## High Priority Bugs
 
-### ⚠️ Bug #4: Object Methods Not Detected
+###  Bug #4: Object Methods Not Detected
 **Status:** Confirmed - 0% detection rate  
 **Severity:** HIGH  
 **Impact:** Missing object literal methods
@@ -120,9 +120,9 @@ function switchStatement(x: string) {
 **Test Case:**
 ```typescript
 const obj = {
-  methodShorthand() {},        // ❌ Not detected
-  methodTraditional: function() {}, // ❌ Not detected
-  methodArrow: () => {},       // ❌ Not detected
+  methodShorthand() {},        //  Not detected
+  methodTraditional: function() {}, //  Not detected
+  methodArrow: () => {},       // Not detected
 }
 ```
 
@@ -133,15 +133,15 @@ const obj = {
 
 ---
 
-### ⚠️ Bug #5: Method Assignments Not Detected  
+###  Bug #5: Method Assignments Not Detected  
 **Status:** Confirmed - 0% detection rate  
 **Severity:** HIGH  
 **Impact:** Missing Express-style method assignments
 
 **Test Case:**
 ```typescript
-response.send = function(body) {}  // ❌ Not detected
-response.json = (data) => {}       // ❌ Not detected
+response.send = function(body) {}  // Not detected
+response.json = (data) => {}       // Not detected
 ```
 
 **Expected:** 2 functions  
@@ -155,7 +155,7 @@ response.json = (data) => {}       // ❌ Not detected
 
 ## Medium Priority Bugs
 
-### ⚠️ Bug #6: Loop Complexity Undercount
+###  Bug #6: Loop Complexity Undercount
 **Status:** Confirmed  
 **Severity:** MEDIUM
 
@@ -169,7 +169,7 @@ response.json = (data) => {}       // ❌ Not detected
 
 ---
 
-### ⚠️ Bug #7: Nested Complexity Miscalculated
+###  Bug #7: Nested Complexity Miscalculated
 **Status:** Confirmed  
 **Severity:** MEDIUM
 
@@ -194,7 +194,7 @@ function nestedIfs(x: number, y: number) {
 
 ---
 
-### ⚠️ Bug #8: Logical Operators Undercount
+###  Bug #8: Logical Operators Undercount
 **Status:** Confirmed  
 **Severity:** MEDIUM
 
@@ -227,9 +227,9 @@ function logicalOps(x: number, y: number) {
 
 **Test Cases:**
 ```typescript
-array.map(x => x * 2);           // ❌ Not detected
-array.filter(function(x) {...}); // ❌ Not detected
-setTimeout(() => {...}, 1000);   // ❌ Not detected
+array.map(x => x * 2);           //  Not detected
+array.filter(function(x) {...}); //  Not detected
+setTimeout(() => {...}, 1000);   //  Not detected
 ```
 
 **Priority:** P3 - Uncommon to need complexity on inline callbacks
@@ -242,30 +242,30 @@ setTimeout(() => {...}, 1000);   // ❌ Not detected
 
 **Test Cases:**
 ```typescript
-(function() { console.log('IIFE'); })();  // ❌ Not detected
-(() => { console.log('IIFE arrow'); })(); // ❌ Not detected
+(function() { console.log('IIFE'); })();  // Not detected
+(() => { console.log('IIFE arrow'); })(); //  Not detected
 ```
 
 **Priority:** P3 - Rare pattern in modern code
 
 ---
 
-## What Works ✅
+## What Works 
 
 ### Function Detection (Working)
-- ✅ Traditional function declarations
-- ✅ Arrow function assignments
-- ✅ Function expressions
-- ✅ Nested functions
-- ✅ Async functions
-- ✅ Generator functions (likely)
-- ✅ Exported functions
+- Traditional function declarations
+- Arrow function assignments
+- Function expressions
+- Nested functions
+- Async functions
+- Generator functions (likely)
+- Exported functions
 
 ### Complexity Calculation (Working)
-- ✅ Base complexity (1)
-- ✅ Basic if statements
-- ✅ Basic for loops (mostly)
-- ✅ Try-catch blocks (partially)
+- Base complexity (1)
+- Basic if statements
+- Basic for loops (mostly)
+- Try-catch blocks (partially)
 
 ---
 
@@ -311,16 +311,16 @@ setTimeout(() => {...}, 1000);   // ❌ Not detected
 
 | Pattern Type | Expected | Detected | Rate |
 |--------------|----------|----------|------|
-| Traditional functions | 4 | 4 | 100% ✅ |
-| Arrow functions | 5 | 5 | 100% ✅ |
-| Function expressions | 2 | 2 | 100% ✅ |
-| Class methods | 9 | 0 | 0% ❌ |
-| Object methods | 4 | 0 | 0% ❌ |
-| Method assignments | 2 | 0 | 0% ❌ |
-| Nested functions | 3 | 3 | 100% ✅ |
-| Anonymous callbacks | 4 | 0 | 0% ❌ |
-| IIFEs | 2 | 0 | 0% ❌ |
-| Exports | 3 | 3 | 100% ✅ |
+| Traditional functions | 4 | 4 | 100%  |
+| Arrow functions | 5 | 5 | 100%  |
+| Function expressions | 2 | 2 | 100% |
+| Class methods | 9 | 0 | 0%  |
+| Object methods | 4 | 0 | 0%  |
+| Method assignments | 2 | 0 | 0%  |
+| Nested functions | 3 | 3 | 100%  |
+| Anonymous callbacks | 4 | 0 | 0%  |
+| IIFEs | 2 | 0 | 0%  |
+| Exports | 3 | 3 | 100%  |
 | **TOTAL** | **40** | **19** | **47.5%** |
 
 ---
@@ -337,5 +337,5 @@ setTimeout(() => {...}, 1000);   // ❌ Not detected
 ---
 
 **Generated:** January 31, 2026  
-**Test Files:** test-all-patterns.ts, test-complexity.ts  
-**Test Reports:** detection-test.html, complexity-test.html
+**Test Files:** test-patterns.ts, test-complexity.ts  
+**Test Reports:** function-detection-test.html, test-complexity.html

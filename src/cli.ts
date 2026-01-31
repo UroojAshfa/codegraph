@@ -6,7 +6,7 @@ import * as path from 'path';
 import { CodeAnalyzer } from './analyzer';
 import { AIService } from './ai';
 import { BatchAnalyzer } from './batch-analyzer';
-
+import { ReportGenerator } from './report-generator';
 
 // Load dotenv at the very top, silently
 try {
@@ -339,8 +339,8 @@ program
       );
       spinner.stop();
 
-      if (smells.length > 0 && smells[0] !== 'No obvious code smells detected ✅') {
-        console.log(chalk.bold('\n⚠️  Code Smells:\n'));
+      if (smells.length > 0 && smells[0] !== 'No obvious code smells detected ') {
+        console.log(chalk.bold('\n  Code Smells:\n'));
         smells.forEach(smell => {
           if (smell.startsWith('💡')) {
             console.log(chalk.yellow(smell));
@@ -349,7 +349,7 @@ program
           }
         });
       } else {
-        console.log(chalk.bold.green('\n✅ No code smells detected'));
+        console.log(chalk.bold.green('\n No code smells detected'));
       }
 
       console.log();
@@ -523,6 +523,67 @@ program
     }
   });
 
+  //generates HTML report
+  program
+  .command('report <directory>')
+  .description('Generate interactive HTML report')
+  .option('-o, --output <file>', 'Output HTML file path', 'codegraph-report.html')
+  .action((directory: string, options) => {
+    console.log(chalk.bold.cyan('\n📊 CodeGraph - HTML Report Generator\n'));
+
+    // Validate input
+    validateDirectory(directory);
+
+    const spinner = ora('Analyzing codebase...').start();
+
+    try {
+     
+      const analyzer = new CodeAnalyzer();
+      
+      spinner.text = 'Scanning directory structure...';
+      const graph = analyzer.analyzeDirectory(directory);
+      
+      const fileCount = analyzer.getFileCount();
+      const complexity = analyzer.getComplexity();
+      const totalFunctions = complexity.length;
+
+      spinner.text = 'Generating HTML report...';
+
+      //  Generate HTML report
+      const reportGenerator = new ReportGenerator();
+      const projectName = path.basename(directory);
+      
+      const html = reportGenerator.generateHTMLReport(
+        graph,
+        complexity,
+        fileCount,
+        projectName
+      );
+
+      // Save report
+      const outputPath = path.resolve(options.output);
+      reportGenerator.saveHTMLReport(html, outputPath);
+
+      spinner.succeed(chalk.green(`Analyzed ${fileCount} files, ${totalFunctions} functions`));
+
+      console.log(chalk.green(`\n📄 HTML report saved to: ${outputPath}`));
+      console.log(chalk.cyan(`\n💡 Open in browser: file://${outputPath}`));
+      console.log(chalk.bold.green('\n✨ Report generated successfully!\n'));
+
+      // quick preview
+      console.log(chalk.yellow('Report includes:'));
+      console.log(chalk.gray('  • Summary statistics'));
+      console.log(chalk.gray('  • Complexity distribution chart'));
+      console.log(chalk.gray('  • Top complex functions table'));
+      console.log(chalk.gray('  • Architecture insights'));
+      console.log(chalk.gray('  • Actionable recommendations\n'));
+
+    } catch (error) {
+      spinner.fail();
+      handleError(error, 'Report generation');
+    }
+  });
+
 // REFACTOR COMMAND (AI required)
 
 
@@ -605,7 +666,7 @@ program
 
       spinner.succeed(chalk.green('Analysis complete!'));
 
-      console.log(chalk.bold(`\n📍 Function: ${chalk.cyan(functionName)}`));
+      console.log(chalk.bold(`\n Function: ${chalk.cyan(functionName)}`));
       console.log(chalk.gray(`   Location: ${file}:${complexity.line}`));
       console.log(chalk.gray(`   Complexity: ${complexity.complexity} ${complexity.complexity > 10 ? '⚠️' : '✅'}`));
       console.log(chalk.gray(`   Lines: ${complexity.lineCount}`));
@@ -628,11 +689,28 @@ program
 program.addHelpText('after', `
 
 Examples:
+  # Basic analysis
   $ codegraph analyze ./src
   $ codegraph analyze ./src --format json --no-stats
+  
+  # HTML Report 
+  $ codegraph report ./src
+  $ codegraph report ./src --output my-report.html
+  
+  # AI-powered features
   $ codegraph explain ./src/utils.js calculateTotal
   $ codegraph analyze-complex ./src --threshold 15 --limit 5
   $ codegraph refactor ./src/complex.js processData
+  
+  # Batch analysis
+  $ codegraph batch-explain ./src --threshold 10 --limit 20
+  $ codegraph batch-explain D:/react/packages/react --output react-analysis
+
+Features:
+  • analyze: Fast complexity analysis (JSON/Mermaid)
+  • report: Beautiful HTML reports with charts
+  • batch-explain: AI analysis of all complex functions
+  • explain/refactor: AI help for specific functions
 
 Learn more:
   GitHub: https://github.com/UroojAshfa/codegraph

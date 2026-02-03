@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeGraph Report - src</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #1f1f1f;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(
+                180deg,
+                #2a2a2e 0%,
+                #151518 100%
+              );
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 24px;
+            border-radius: 12px;
+            border-left: 4px solid #26262a;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            color: #212529;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #212529;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #48484e;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        thead {
+            background: linear-gradient(
+                180deg,
+                #2a2a2e 0%,
+                #151518 100%
+              );
+            color: white;
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .complexity-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .complexity-low {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .complexity-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .complexity-high {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #e9ecef;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1> CodeGraph Analysis Report</h1>
+            <p>src</p>
+            <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 10px;">
+                Generated on 2/3/2026, 10:52:04 PM
+            </p>
+        </div>
+
+        <div class="content">
+            <!-- Summary Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Files Analyzed</div>
+                    <div class="stat-value">8</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Functions Found</div>
+                    <div class="stat-value">58</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Avg Complexity</div>
+                    <div class="stat-value">6.02</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Max Complexity</div>
+                    <div class="stat-value" style="color: #dc3545">
+                        28
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Entry Points</div>
+                    <div class="stat-value">36</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Leaf Functions</div>
+                    <div class="stat-value">8</div>
+                </div>
+            </div>
+
+            <!-- Complexity Distribution Chart -->
+            <div class="section">
+                <h2>Complexity Distribution</h2>
+                <div class="chart-container">
+                    <canvas id="complexityChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Top Complex Functions -->
+            <div class="section">
+                <h2>Most Complex Functions</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Function</th>
+                            <th>Complexity</th>
+                            <th>Lines</th>
+                            <th>Parameters</th>
+                            <th>File</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <tr>
+                                <td><strong>1</strong></td>
+                                <td><code>CodeAnalyzer.extractFunctions</code></td>
+                                <td>
+                                    <span class="complexity-badge complexity-high">
+                                        28
+                                    </span>
+                                </td>
+                                <td>121</td>
+                                <td>0</td>
+                                <td style="font-size: 0.85rem; color: #6c757d;">
+                                    analyzer.ts:94
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td><strong>2</strong></td>
+                                <td><code>visit</code></td>
+                                <td>
+                                    <span class="complexity-badge complexity-high">
+                                        28
+                                    </span>
+                                </td>
+                                <td>117</td>
+                                <td>1</td>
+                                <td style="font-size: 0.85rem; color: #6c757d;">
+                                    analyzer.ts:95
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td><strong>3</strong></td>
+                                <td><code>CodeAnalyzer.extractCalls</code></td>
+                                <td>
+                                    <span class="complexity-badge complexity-high">
+                                        27
+                                    </span>
+                                </td>
+                                <td>116</td>
+                                <td>0</td>
+                                <td style="font-size: 0.85rem; color: #6c757d;">
+                                    analyzer.ts:217
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td><strong>4</strong></td>
+                                <td><code>visit</code></td>
+                                <td>
+                                    <span class="complexity-badge complexity-high">
+                                        27
+                                    </span>
+                                </td>
+                                <td>109</td>
+                                <td>1</td>
+                                <td style="font-size: 0.85rem; color: #6c757d;">
+                                    analyzer.ts:221
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td><strong>5</strong></td>
+                                <td><code>CodeAnalyzer.calculateComplexity</code></td>
+                                <td>
+                                    <span class="complexity-badge complexity-high">
+                                        24
+                                    </span>
+                                </td>
+                                <td>66</td>
+                                <td>0</td>
+                                <td style="font-size: 0.85rem; color: #6c757d;">
+                                    analyzer.ts:416
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td><strong>6</strong></td>
+                                <td><code>CallGraph.printStats</code></td>
+                                <td>
+                                    <span class="complexity-badge complexity-high">
+                                        17
+                                    </span>
+                                </td>
+                                <td>120</td>
+                                <td>0</td>
+                                <td style="font-size: 0.85rem; color: #6c757d;">
+                                    graph.ts:193
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td><strong>7</strong></td>
+                                <td><code>visit</code></td>
+                                <td>
+                                    <span class="complexity-badge complexity-high">
+                                        16
+                                    </span>
+                                </td>
+                                <td>31</td>
+                                <td>1</td>
+                                <td style="font-size: 0.85rem; color: #6c757d;">
+                                    analyzer.ts:439
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td><strong>8</strong></td>
+                                <td><code>CodeAnalyzer.extractImportsExports</code></td>
+                                <td>
+                                    <span class="complexity-badge complexity-medium">
+                                        15
+                                    </span>
+                                </td>
+                                <td>63</td>
+                                <td>0</td>
+                                <td style="font-size: 0.85rem; color: #6c757d;">
+                                    analyzer.ts:334
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td><strong>9</strong></td>
+                                <td><code>BatchAnalyzer.analyzeBatch</code></td>
+                                <td>
+                                    <span class="complexity-badge complexity-medium">
+                                        15
+                                    </span>
+                                </td>
+                                <td>149</td>
+                                <td>0</td>
+                                <td style="font-size: 0.85rem; color: #6c757d;">
+                                    batch-analyzer.ts:52
+                                </td>
+                            </tr>
+                        
+                            <tr>
+                                <td><strong>10</strong></td>
+                                <td><code>BatchAnalyzer.generateMarkdownReport</code></td>
+                                <td>
+                                    <span class="complexity-badge complexity-medium">
+                                        12
+                                    </span>
+                                </td>
+                                <td>82</td>
+                                <td>0</td>
+                                <td style="font-size: 0.85rem; color: #6c757d;">
+                                    batch-analyzer.ts:203
+                                </td>
+                            </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Architecture Insights -->
+            <div class="section">
+                <h2>Architecture Insights</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Entry Points</div>
+                        <div class="stat-value">36</div>
+                        <p style="margin-top: 8px; color: #6c757d; font-size: 0.85rem;">
+                            Functions not called by others
+                        </p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Leaf Functions</div>
+                        <div class="stat-value">8</div>
+                        <p style="margin-top: 8px; color: #6c757d; font-size: 0.85rem;">
+                            Functions that don't call others
+                        </p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Circular Dependencies</div>
+                        <div class="stat-value" style="color: #28a745">
+                            0
+                        </div>
+                        <p style="margin-top: 8px; color: #6c757d; font-size: 0.85rem;">
+                            ✅ Clean architecture
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            
+            <!-- Most Imported Files -->
+            <div class="section">
+                <h2>Most Imported Files</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>File</th>
+                            <th>Import Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <tr>
+                                <td><code>./analyzer</code></td>
+                                <td><strong>5</strong> times</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><code>./graph</code></td>
+                                <td><strong>2</strong> times</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><code>...</code></td>
+                                <td><strong>2</strong> times</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><code>./ai</code></td>
+                                <td><strong>2</strong> times</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><code>./batch-analyzer</code></td>
+                                <td><strong>1</strong> times</td>
+                            </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+
+            <!-- Recommendations -->
+            <div class="section">
+                <h2>Recommendations</h2>
+                
+        <div style="padding: 16px; background: #f8d7da; border-left: 4px solid #dc3545; border-radius: 8px; margin-bottom: 16px;">
+          <strong> High Complexity Alert:</strong> 7 function(s) have complexity >15. 
+          Consider refactoring for better maintainability.
+        </div>
+      
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Generated by <a href="https://github.com/YourUsername/codegraph" target="_blank">CodeGraph</a></p>
+            <p style="margin-top: 8px;">AI-powered code analysis tool</p>
+        </div>
+    </div>
+
+    <script>
+        // Complexity Distribution Chart
+        const ctx = document.getElementById('complexityChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["1-5","6-10","11-15","16-20","21+"],
+                datasets: [{
+                    label: 'Number of Functions',
+                    data: [41,7,3,2,5],
+                    backgroundColor: [
+                        'rgba(40, 167, 69, 0.8)',
+                        'rgba(255, 193, 7, 0.8)',
+                        'rgba(255, 152, 0, 0.8)',
+                        'rgba(220, 53, 69, 0.8)',
+                        'rgba(108, 117, 125, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgb(40, 167, 69)',
+                        'rgb(255, 193, 7)',
+                        'rgb(255, 152, 0)',
+                        'rgb(220, 53, 69)',
+                        'rgb(108, 117, 125)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

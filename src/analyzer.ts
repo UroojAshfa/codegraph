@@ -14,7 +14,7 @@ interface FunctionInfo {
 
 interface ImportInfo {
   file: string;
-  imports: string[];  // Files this file imports
+  imports: string[];
   line: number;
 }
 
@@ -56,8 +56,6 @@ export class CodeAnalyzer {
   private exports: ExportInfo[] = [];
   private complexity: ComplexityInfo[] = [];
 
-  
-
   constructor() {
     this.jsParser = new Parser();
     this.jsParser.setLanguage(JavaScript);
@@ -66,10 +64,9 @@ export class CodeAnalyzer {
     this.tsParser.setLanguage(TypeScript.typescript);
   }
 
-  // Recursively find all .js files in a directory
+  // FIX 1: Removed __tests__, test, tests exclusions
   private findJSFiles(dir: string): string[] {
     const files: string[] = [];
-
     const items = fs.readdirSync(dir);
 
     for (const item of items) {
@@ -77,22 +74,16 @@ export class CodeAnalyzer {
       const stat = fs.statSync(fullPath);
 
       if (stat.isDirectory()) {
-        // Skip node_modules and hidden directories
-        if (item === 'node_modules' || 
-        item.startsWith('.') ||
-        item === 'test' || 
-        item === '__tests__' ||
-        item === 'tests') {
+        if (item === 'node_modules' || item.startsWith('.')) {
           continue;
         }
-        // Recursively search subdirectories
         files.push(...this.findJSFiles(fullPath));
       } else if (
         item.endsWith('.js') || 
         item.endsWith('.ts') || 
         item.endsWith('.jsx') || 
         item.endsWith('.tsx')
-      )   {
+      ) {
         files.push(fullPath);
       }
     }
@@ -102,7 +93,8 @@ export class CodeAnalyzer {
 
   private extractFunctions(tree: Parser.Tree, filePath: string): void {
     const visit = (node: Parser.SyntaxNode) => {
-      // Regular function declarations
+
+      // 1. Regular function declarations
       if (node.type === 'function_declaration') {
         const nameNode = node.childForFieldName('name');
         if (nameNode) {
@@ -115,62 +107,56 @@ export class CodeAnalyzer {
         }
       }
 
-      // Handle: module.exports = IDENTIFIER
-    
-    // In extractFunctions method, replace the assignment_expression block with this:
+      // 2. Assignment expressions (module.exports, obj.method = fn, simple assignments)
+      if (node.type === 'assignment_expression') {
+        const left = node.childForFieldName('left');
+        const right = node.childForFieldName('right');
 
-if (node.type === 'assignment_expression') {
-  const left = node.childForFieldName('left');
-  const right = node.childForFieldName('right');
+        // module.exports = IDENTIFIER
+        if (
+          left?.type === 'member_expression' &&
+          left.text === 'module.exports' &&
+          right?.type === 'identifier'
+        ) {
+          this.exportedFunctions.add(right.text);
+        }
 
-  // Handle: module.exports = IDENTIFIER 
-  if (
-    left?.type === 'member_expression' &&
-    left.text === 'module.exports' &&
-    right?.type === 'identifier'
-  ) {
-    this.exportedFunctions.add(right.text);
-  }
-
-  //Handle method/function assignments
-  if (right && (
-    right.type === 'function' || 
-    right.type === 'function_expression' ||
-    right.type === 'arrow_function'
-  )) {
-    // Case 1: obj.method = function() {} or obj.method = () => {}
-    if (left && left.type === 'member_expression') {
-      const propertyNode = left.childForFieldName('property');
-      const objectNode = left.childForFieldName('object');
-      
-      if (propertyNode && objectNode) {
-        // Create qualified name: "res.send" not just "send"
-        const functionName = `${objectNode.text}.${propertyNode.text}`;
-        
-        this.functions.push({
-          name: functionName,
-          file: filePath,
-          line: propertyNode.startPosition.row + 1
-        });
-        
-        // Calculate complexity 
-        this.calculateComplexity(right, functionName, filePath);
+        // Method/function assignments
+        if (right && (
+          right.type === 'function' || 
+          right.type === 'function_expression' ||
+          right.type === 'arrow_function'
+        )) {
+          // obj.method = function() {} or obj.method = () => {}
+          if (left && left.type === 'member_expression') {
+            const propertyNode = left.childForFieldName('property');
+            const objectNode = left.childForFieldName('object');
+            
+            if (propertyNode && objectNode) {
+              const functionName = `${objectNode.text}.${propertyNode.text}`;
+              
+              this.functions.push({
+                name: functionName,
+                file: filePath,
+                line: propertyNode.startPosition.row + 1
+              });
+              
+              this.calculateComplexity(right, functionName, filePath);
+            }
+          }
+          // Simple assignment: myVar = function() {}
+          else if (left && left.type === 'identifier') {
+            this.functions.push({
+              name: left.text,
+              file: filePath,
+              line: left.startPosition.row + 1
+            });
+            this.calculateComplexity(right, left.text, filePath);
+          }
+        }
       }
-    }
-    // Case 2: simple assignment
-    // 
-    else if (left && left.type === 'identifier') {
-      this.functions.push({
-        name: left.text,
-        file: filePath,
-        line: left.startPosition.row + 1
-      });
-      this.calculateComplexity(right, left.text, filePath);
-    }
-  }
-}
       
-      // Arrow functions: const add = () => {}
+      // 3. Arrow functions: const add = () => {}
       if (node.type === 'variable_declarator') {
         const nameNode = node.childForFieldName('name');
         const valueNode = node.childForFieldName('value');
@@ -185,11 +171,11 @@ if (node.type === 'assignment_expression') {
         }
       }
       
-      // Class methods
+     
       if (node.type === 'method_definition') {
         const nameNode = node.childForFieldName('name');
         if (nameNode) {
-          // Get the class name for context
+          // Walk up: method_definition -> class_body -> class_declaration
           let className = 'Unknown';
           let parent = node.parent;
           while (parent) {
@@ -202,12 +188,19 @@ if (node.type === 'assignment_expression') {
             }
             parent = parent.parent;
           }
+
+          const functionName = `${className}.${nameNode.text}`;
           
+
           this.functions.push({
-            name: `${className}.${nameNode.text}`,
+            name: functionName,
             file: filePath,
             line: nameNode.startPosition.row + 1
           });
+
+          // Use the whole node for complexity calculation
+          const bodyNode = node.childForFieldName('body');
+          this.calculateComplexity(bodyNode || node, functionName, filePath);
         }
       }
   
@@ -221,337 +214,324 @@ if (node.type === 'assignment_expression') {
   }
 
   // Extract function calls from a single file
-private extractCalls(tree: Parser.Tree, filePath: string): void {
-  let currentFunction: string | null = null;
-  let currentClass: string | null = null;
+  private extractCalls(tree: Parser.Tree, filePath: string): void {
+    let currentFunction: string | null = null;
+    let currentClass: string | null = null;
 
-  const visit = (node: Parser.SyntaxNode) => {
-    // Track current class
-    if (node.type === 'class_declaration') {
-      const classNameNode = node.childForFieldName('name');
-      if (classNameNode) {
-        const previousClass = currentClass;
-        currentClass = classNameNode.text;
+    const visit = (node: Parser.SyntaxNode) => {
+      // Track current class
+      if (node.type === 'class_declaration') {
+        const classNameNode = node.childForFieldName('name');
+        if (classNameNode) {
+          const previousClass = currentClass;
+          currentClass = classNameNode.text;
 
-        for (let i = 0; i < node.childCount; i++) {
-          visit(node.child(i)!);
+          for (let i = 0; i < node.childCount; i++) {
+            visit(node.child(i)!);
+          }
+
+          currentClass = previousClass;
+          return;
         }
-
-        currentClass = previousClass;
-        return;
       }
-    }
 
-    
-    
+      // Track regular functions
+      if (node.type === 'function_declaration') {
+        const nameNode = node.childForFieldName('name');
+        if (nameNode) {
+          const previousFunction = currentFunction;
+          currentFunction = nameNode.text;
 
+          for (let i = 0; i < node.childCount; i++) {
+            visit(node.child(i)!);
+          }
 
-    // Track regular functions
-    if (node.type === 'function_declaration') {
-      const nameNode = node.childForFieldName('name');
-      if (nameNode) {
-        const previousFunction = currentFunction;
-        currentFunction = nameNode.text;
-
-        for (let i = 0; i < node.childCount; i++) {
-          visit(node.child(i)!);
+          currentFunction = previousFunction;
+          return;
         }
-
-        currentFunction = previousFunction;
-        return;
       }
-    }
 
-    // Track arrow functions
-    if (node.type === 'variable_declarator') {
-      const nameNode = node.childForFieldName('name');
-      const valueNode = node.childForFieldName('value');
-      
-      if (nameNode && valueNode && valueNode.type === 'arrow_function') {
-        const previousFunction = currentFunction;
-        currentFunction = nameNode.text;
+      // Track arrow functions
+      if (node.type === 'variable_declarator') {
+        const nameNode = node.childForFieldName('name');
+        const valueNode = node.childForFieldName('value');
+        
+        if (nameNode && valueNode && valueNode.type === 'arrow_function') {
+          const previousFunction = currentFunction;
+          currentFunction = nameNode.text;
 
-        for (let i = 0; i < valueNode.childCount; i++) {
-          visit(valueNode.child(i)!);
+          for (let i = 0; i < valueNode.childCount; i++) {
+            visit(valueNode.child(i)!);
+          }
+
+          currentFunction = previousFunction;
+          return;
         }
-
-        currentFunction = previousFunction;
-        return;
       }
-    }
 
-    // Track class methods
-    if (node.type === 'method_definition') {
-      const nameNode = node.childForFieldName('name');
-      if (nameNode && currentClass) {
-        const previousFunction = currentFunction;
-        currentFunction = `${currentClass}.${nameNode.text}`;
+      // Track class methods
+      if (node.type === 'method_definition') {
+        const nameNode = node.childForFieldName('name');
+        if (nameNode && currentClass) {
+          const previousFunction = currentFunction;
+          currentFunction = `${currentClass}.${nameNode.text}`;
 
-        for (let i = 0; i < node.childCount; i++) {
-          visit(node.child(i)!);
+          for (let i = 0; i < node.childCount; i++) {
+            visit(node.child(i)!);
+          }
+
+          currentFunction = previousFunction;
+          return;
         }
-
-        currentFunction = previousFunction;
-        return;
       }
-    }
 
-    // Find regular function calls: someFunction()
-    if (node.type === 'call_expression' && currentFunction) {
-      const functionNode = node.childForFieldName('function');
-      
-      if (functionNode && functionNode.type === 'identifier') {
-        this.calls.push({
-          caller: currentFunction,
-          callee: functionNode.text,
-          file: filePath,
-          line: functionNode.startPosition.row + 1
-        });
-      }
-      
-      // Find method calls: this.someMethod() or obj.method()
-      if (functionNode && functionNode.type === 'member_expression') {
-        const propertyNode = functionNode.childForFieldName('property');
-        if (propertyNode) {
-          // Check if it's this.method()
-          const objectNode = functionNode.childForFieldName('object');
-          if (objectNode && objectNode.type === 'this' && currentClass) {
-            this.calls.push({
-              caller: currentFunction,
-              callee: `${currentClass}.${propertyNode.text}`,
-              file: filePath,
-              line: propertyNode.startPosition.row + 1
-            });
-          } else {
-            // Generic method call
-            this.calls.push({
-              caller: currentFunction,
-              callee: propertyNode.text,
-              file: filePath,
-              line: propertyNode.startPosition.row + 1
-            });
+      // Find regular function calls: someFunction()
+      if (node.type === 'call_expression' && currentFunction) {
+        const functionNode = node.childForFieldName('function');
+        
+        if (functionNode && functionNode.type === 'identifier') {
+          this.calls.push({
+            caller: currentFunction,
+            callee: functionNode.text,
+            file: filePath,
+            line: functionNode.startPosition.row + 1
+          });
+        }
+        
+        // Find method calls: this.someMethod() or obj.method()
+        if (functionNode && functionNode.type === 'member_expression') {
+          const propertyNode = functionNode.childForFieldName('property');
+          if (propertyNode) {
+            const objectNode = functionNode.childForFieldName('object');
+            if (objectNode && objectNode.type === 'this' && currentClass) {
+              this.calls.push({
+                caller: currentFunction,
+                callee: `${currentClass}.${propertyNode.text}`,
+                file: filePath,
+                line: propertyNode.startPosition.row + 1
+              });
+            } else {
+              this.calls.push({
+                caller: currentFunction,
+                callee: propertyNode.text,
+                file: filePath,
+                line: propertyNode.startPosition.row + 1
+              });
+            }
           }
         }
       }
-    }
 
-    // Continue visiting children
-    for (let i = 0; i < node.childCount; i++) {
-      visit(node.child(i)!);
-    }
-  };
+      // Continue visiting children
+      for (let i = 0; i < node.childCount; i++) {
+        visit(node.child(i)!);
+      }
+    };
 
-  visit(tree.rootNode);
-}
-
-private extractImportsExports(tree: Parser.Tree, filePath: string): void {
-
-
-
-  const fileImports: string[] = [];
-  const fileExports: string[] = [];
-  
-  // Read the actual file content
-  const code = fs.readFileSync(filePath, 'utf-8');
-  
-  
-  // Find ES6 imports: import ... from '...'
-  const es6ImportRegex = /import\s+.*?from\s+['"]([^'"]+)['"]/g;
-  let match;
-  while ((match = es6ImportRegex.exec(code)) !== null) {
-    const modulePath = match[1];
-    if (modulePath.startsWith('.') || modulePath.startsWith('/')) {
-      fileImports.push(modulePath);
-    }
+    visit(tree.rootNode);
   }
-  
-  // Find CommonJS requires: require('...')
-  const requireRegex = /require\s*\(\s*['"]([^'"]+)['"]\s*\)/g;
-  while ((match = requireRegex.exec(code)) !== null) {
-    const modulePath = match[1];
-    if (modulePath.startsWith('.') || modulePath.startsWith('/')) {
-      fileImports.push(modulePath);
-    }
-  }
-  
-  // Find ES6 exports
-  if (code.includes('export ')) {
-    // export function name() or export const name
-    const exportFunctionRegex = /export\s+(?:async\s+)?function\s+(\w+)/g;
-    while ((match = exportFunctionRegex.exec(code)) !== null) {
-      fileExports.push(match[1]);
-    }
+
+  private extractImportsExports(tree: Parser.Tree, filePath: string): void {
+    const fileImports: string[] = [];
+    const fileExports: string[] = [];
     
-    const exportConstRegex = /export\s+const\s+(\w+)/g;
-    while ((match = exportConstRegex.exec(code)) !== null) {
-      fileExports.push(match[1]);
-    }
-    
-    // export default
-    if (code.includes('export default')) {
-      fileExports.push('default');
-    }
-  }
-  
-  // Find CommonJS exports
-  if (code.includes('module.exports') || code.includes('exports.')) {
-    fileExports.push('commonjs-exports');
-  }
-  
-  // Store results
-  if (fileImports.length > 0) {
-    this.imports.push({
-      file: filePath,
-      imports: fileImports,
-      line: 1
-    });
-  }
-  
-  if (fileExports.length > 0) {
-    this.exports.push({
-      file: filePath,
-      exports: fileExports,
-      line: 1
-    });
-  }
-}
-
-private analyzeFile(filePath: string): void {
-  try {
     const code = fs.readFileSync(filePath, 'utf-8');
     
-    // Choose parser based on file
-    const isTypeScript = filePath.endsWith('.ts') || filePath.endsWith('.tsx');
-    const parser = isTypeScript ? this.tsParser : this.jsParser;
-    
-    const tree = parser.parse(code);
-
-    this.extractFunctions(tree, filePath);
-    this.extractCalls(tree, filePath);
-    this.extractImportsExports(tree, filePath);
-  } catch (error) {
-    // Silently skip files that can't be parsed
-    console.error(`Warning: Could not parse ${filePath}`);
-  }
-}
-
-private calculateComplexity(node: Parser.SyntaxNode, functionName: string, filePath: string): void {
-  let complexity = 1; // Base complexity
-  let lineCount = node.endPosition.row - node.startPosition.row + 1;
-  let paramCount = 0;
-
-  // Count parameters
-  const paramsNode = node.childForFieldName('parameters');
-  if (paramsNode) {
-    for (let i = 0; i < paramsNode.childCount; i++) {
-      const child = paramsNode.child(i);
-      if (child && child.type === 'identifier') {
-        paramCount++;
+    // Find ES6 imports: import ... from '...'
+    const es6ImportRegex = /import\s+.*?from\s+['"]([^'"]+)['"]/g;
+    let match;
+    while ((match = es6ImportRegex.exec(code)) !== null) {
+      const modulePath = match[1];
+      if (modulePath.startsWith('.') || modulePath.startsWith('/')) {
+        fileImports.push(modulePath);
       }
     }
+    
+    // Find CommonJS requires: require('...')
+    const requireRegex = /require\s*\(\s*['"]([^'"]+)['"]\s*\)/g;
+    while ((match = requireRegex.exec(code)) !== null) {
+      const modulePath = match[1];
+      if (modulePath.startsWith('.') || modulePath.startsWith('/')) {
+        fileImports.push(modulePath);
+      }
+    }
+    
+    // Find ES6 exports
+    if (code.includes('export ')) {
+      const exportFunctionRegex = /export\s+(?:async\s+)?function\s+(\w+)/g;
+      while ((match = exportFunctionRegex.exec(code)) !== null) {
+        fileExports.push(match[1]);
+      }
+      
+      const exportConstRegex = /export\s+const\s+(\w+)/g;
+      while ((match = exportConstRegex.exec(code)) !== null) {
+        fileExports.push(match[1]);
+      }
+      
+      if (code.includes('export default')) {
+        fileExports.push('default');
+      }
+    }
+    
+    // Find CommonJS exports
+    if (code.includes('module.exports') || code.includes('exports.')) {
+      fileExports.push('commonjs-exports');
+    }
+    
+    if (fileImports.length > 0) {
+      this.imports.push({
+        file: filePath,
+        imports: fileImports,
+        line: 1
+      });
+    }
+    
+    if (fileExports.length > 0) {
+      this.exports.push({
+        file: filePath,
+        exports: fileExports,
+        line: 1
+      });
+    }
   }
 
-  // Count complexity-adding constructs
-  const visit = (currentNode: Parser.SyntaxNode) => {
-    // Each decision point adds 1
-    if (
-      currentNode.type === 'if_statement' ||
-      currentNode.type === 'for_statement' ||
-      currentNode.type === 'while_statement' ||
-      currentNode.type === 'case_clause' ||
-      currentNode.type === 'catch_clause' ||
-      currentNode.type === 'conditional_expression'  // ternary
-    ) {
-      complexity++;
+  private analyzeFile(filePath: string): void {
+    try {
+      const code = fs.readFileSync(filePath, 'utf-8');
+      
+      const isTypeScript = filePath.endsWith('.ts') || filePath.endsWith('.tsx');
+      const parser = isTypeScript ? this.tsParser : this.jsParser;
+      
+      const tree = parser.parse(code);
+
+      this.extractFunctions(tree, filePath);
+      this.extractCalls(tree, filePath);
+      this.extractImportsExports(tree, filePath);
+    } catch (error) {
+      console.error(`Warning: Could not parse ${filePath}`);
+    }
+  }
+
+  // FIX 3: Added switch_case and ternary node types for TypeScript
+  private calculateComplexity(node: Parser.SyntaxNode, functionName: string, filePath: string): void {
+    let complexity = 1; // Base complexity
+    let lineCount = node.endPosition.row - node.startPosition.row + 1;
+    let paramCount = 0;
+
+    // Count parameters
+    const paramsNode = node.childForFieldName('parameters');
+    if (paramsNode) {
+      for (let i = 0; i < paramsNode.childCount; i++) {
+        const child = paramsNode.child(i);
+        if (child && (
+          child.type === 'identifier' ||
+          child.type === 'required_parameter' ||   // TypeScript: (x: number)
+          child.type === 'optional_parameter' ||   // TypeScript: (x?: number)
+          child.type === 'rest_parameter' ||       // TypeScript: (...args)
+          child.type === 'assignment_pattern'      // Default: (x = 5)
+        )) {
+          paramCount++;
+        }
+      }
     }
 
-    // Logical operators add complexity
-    if (
-      currentNode.type === 'binary_expression' &&
-      (currentNode.text.includes('&&') || currentNode.text.includes('||'))
-    ) {
-      complexity++;
-    }
+    // Count complexity-adding constructs
+    const visit = (currentNode: Parser.SyntaxNode) => {
+     
+      if (
+        currentNode.type === 'if_statement' ||
+        currentNode.type === 'for_statement' ||
+        currentNode.type === 'for_in_statement' ||
+        currentNode.type === 'for_of_statement' ||
+        currentNode.type === 'while_statement' ||
+        currentNode.type === 'do_statement' ||
+        currentNode.type === 'case_clause' ||       // JavaScript switch case
+        currentNode.type === 'switch_case' ||       // TypeScript switch case
+        currentNode.type === 'catch_clause' ||
+        currentNode.type === 'conditional_expression' ||
+        currentNode.type === 'ternary_expression' 
+      ) {
+        complexity++;
+      }
 
-    // Recurse
-    for (let i = 0; i < currentNode.childCount; i++) {
-      visit(currentNode.child(i)!);
-    }
-  };
+      // Logical operators && and ||
+      if (
+        currentNode.type === 'binary_expression' &&
+        (currentNode.text.includes('&&') || currentNode.text.includes('||'))
+      ) {
+        complexity++;
+      }
 
-  visit(node);
+      // Recurse
+      for (let i = 0; i < currentNode.childCount; i++) {
+        visit(currentNode.child(i)!);
+      }
+    };
 
-  this.complexity.push({
-    name: functionName,
-    file: filePath,
-    line: node.startPosition.row + 1,
-    complexity,
-    lineCount,
-    paramCount
-  });
-}
+    visit(node);
 
-public analyzeDirectory(directory: string): CallGraph {
-  const files = this.findJSFiles(directory);
-  this.fileCount = files.length;
-  
-  // Analyze each file using the analyzeFile method
-  files.forEach(file => this.analyzeFile(file));  
-
-  // Build graph
-  const graph = new CallGraph();
-
-  this.functions.forEach(fn => {
-    if (!fn.name) {
-      console.warn(`[WARN] Anonymous function ignored → ${fn.file}:${fn.line}`);
-      return;
-    }
-    //console.log(`[FUNCTION] ${fn.name} → ${fn.file}:${fn.line}`);
-    graph.addNode(fn.name, fn.file, fn.line);
-  });
-
-  this.calls.forEach(call => {
-    if (!call.caller || !call.callee) {
-      console.warn(`[WARN] Unresolved call ignored → ${call.file}:${call.line}`);
-      return;
-    }
-    //console.log(`[CALL] ${call.caller} → ${call.callee} (${call.file}:${call.line})`);
-    graph.addEdge(call.caller, call.callee, call.file, call.line);
-  });
-
-  // Add dependencies
-  this.imports.forEach(importInfo => {
-    importInfo.imports.forEach(importPath => {
-      graph.addDependency(importInfo.file, importPath);
+    this.complexity.push({
+      name: functionName,
+      file: filePath,
+      line: node.startPosition.row + 1,
+      complexity,
+      lineCount,
+      paramCount
     });
-  });
+  }
 
-  // Add complexity
-  this.complexity.forEach(c => {
-    graph.addComplexity(c.name, c);
-  });
+  public analyzeDirectory(directory: string): CallGraph {
+    const files = this.findJSFiles(directory);
+    this.fileCount = files.length;
+    
+    files.forEach(file => this.analyzeFile(file));  
 
-  return graph;
+
+
+    const graph = new CallGraph();
+
+    this.functions.forEach(fn => {
+      if (!fn.name) {
+        console.warn(`[WARN] Anonymous function ignored → ${fn.file}:${fn.line}`);
+        return;
+      }
+      graph.addNode(fn.name, fn.file, fn.line);
+    });
+
+    this.calls.forEach(call => {
+      if (!call.caller || !call.callee) {
+        console.warn(`[WARN] Unresolved call ignored → ${call.file}:${call.line}`);
+        return;
+      }
+      graph.addEdge(call.caller, call.callee, call.file, call.line);
+    });
+
+    this.imports.forEach(importInfo => {
+      importInfo.imports.forEach(importPath => {
+        graph.addDependency(importInfo.file, importPath);
+      });
+    });
+
+    this.complexity.forEach(c => {
+      graph.addComplexity(c.name, c);
+    });
+
+    return graph;
+  }
+
+  public getFileCount(): number {
+    return this.fileCount;
+  }
+
+  public getImports(): ImportInfo[] {
+    return this.imports;
+  }
+
+  public getExports(): ExportInfo[] {
+    return this.exports;
+  }
+
+  public getComplexity(): ComplexityInfo[] {
+    return this.complexity;
+  }
 }
-
-
-public getFileCount(): number {
-  return this.fileCount;
-}
-
-public getImports(): ImportInfo[] {
-  return this.imports;
-}
-
-public getExports(): ExportInfo[] {
-  return this.exports;
-
-}
-
-public getComplexity(): ComplexityInfo[] {
-  return this.complexity;
-}
-}
-
-
-

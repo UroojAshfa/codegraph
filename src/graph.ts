@@ -24,7 +24,9 @@ export interface GraphNode {
     private complexityData: Map<string, ComplexityInfo> = new Map();
   
     addNode(name: string, file: string, line: number): void {
-      // Using file + name as unique ID to handle duplicate function names
+      // Use file + line as unique ID to handle same-named functions in different files/locations
+      //const id = `${name}:${line}`;
+
       const id = `${name}`;
       
       if (!this.nodes.has(id)) {
@@ -36,6 +38,8 @@ export interface GraphNode {
         });
       }
     }
+
+    
   
     addEdge(from: string, to: string, file: string, line: number): void {
       this.edges.push({ from, to, file, line });
@@ -49,14 +53,14 @@ export interface GraphNode {
       return this.edges
         .filter(edge => edge.to === functionName)
         .map(edge => edge.from)
-        .filter((value, index, self) => self.indexOf(value) === index); // unique
+        .filter((value, index, self) => self.indexOf(value) === index); 
     }
   
     getCallees(functionName: string): string[] {
       return this.edges
         .filter(edge => edge.from === functionName)
         .map(edge => edge.to)
-        .filter((value, index, self) => self.indexOf(value) === index); // unique
+        .filter((value, index, self) => self.indexOf(value) === index);
     }
   
     getAllNodes(): GraphNode[] {
@@ -187,7 +191,7 @@ export interface GraphNode {
     
   
     printStats(): void {
-      console.log('📊 GRAPH STATISTICS\n');
+      console.log('  GRAPH STATISTICS\n');
       console.log(`  Total nodes (functions): ${this.nodes.size}`);
       console.log(`  Total edges (calls): ${this.edges.length}\n`);
       
@@ -228,7 +232,7 @@ export interface GraphNode {
       const leaves = Array.from(this.nodes.keys()).filter(name => !callers.has(name));
   
       if (leaves.length > 0) {
-        console.log(`  🍃 Leaf functions (don't call anything): ${leaves.length}`);
+        console.log(`   Leaf functions (don't call anything): ${leaves.length}`);
         const display = leaves.slice(0, 5);
         display.forEach(fn => console.log(`     • ${fn}`));
         if (leaves.length > 5) {
@@ -237,12 +241,12 @@ export interface GraphNode {
       }
       
       if (this.dependencies.size > 0) {
-        console.log(`\n📦 DEPENDENCY ANALYSIS\n`);
+        console.log(`\n DEPENDENCY ANALYSIS\n`);
         console.log(`  Total files with imports: ${this.dependencies.size}`);
         
         const mostImported = this.getMostImportedFiles().slice(0, 5);
         if (mostImported.length > 0) {
-          console.log(`\n  📥 Most imported files:`);
+          console.log(`\n   Most imported files:`);
           mostImported.forEach(({ file, count }) => {
             console.log(`     • ${file}: imported ${count} time${count > 1 ? 's' : ''}`);
           });
@@ -250,17 +254,17 @@ export interface GraphNode {
   
         const cycles = this.getCircularDependencies();
         if (cycles.length > 0) {
-          console.log(`\n  ⚠️  Circular dependencies found: ${cycles.length}`);
+          console.log(`\n    Circular dependencies found: ${cycles.length}`);
           cycles.slice(0, 3).forEach(cycle => {
             console.log(`     • ${cycle.join(' → ')}`);
           });
         } else {
-          console.log(`\n  ✅ No circular dependencies detected`);
+          console.log(`\n   No circular dependencies detected`);
         }
       }
 
       if (this.complexityData.size > 0) {
-        console.log(`\n⚡ COMPLEXITY ANALYSIS\n`);
+        console.log(`\n COMPLEXITY ANALYSIS\n`);
         
         const complexityArray = Array.from(this.complexityData.values());
         
@@ -273,9 +277,9 @@ export interface GraphNode {
           .sort((a, b) => b.complexity - a.complexity)
           .slice(0, 5);
         
-        console.log(`\n  🔴 Most complex functions:`);
+        console.log(`\n   Most complex functions:`);
         mostComplex.forEach(c => {
-          const warning = c.complexity > 10 ? ' ⚠️' : '';
+          const warning = c.complexity > 10 ? ' ' : '';
           console.log(`     • ${c.name}: ${c.complexity}${warning} (${c.lineCount} lines)`);
         });
         
@@ -299,7 +303,7 @@ export interface GraphNode {
           .slice(0, 3);
         
         if (manyParams.length > 0) {
-          console.log(`\n  📋 Functions with many parameters:`);
+          console.log(`\n   Functions with many parameters:`);
           manyParams.forEach(c => {
             console.log(`     • ${c.name}: ${c.paramCount} parameters`);
           });

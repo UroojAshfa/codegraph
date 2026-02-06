@@ -1,4 +1,5 @@
-// src/analyzer.ts
+
+//
 import * as fs from 'fs';
 import * as path from 'path';
 import Parser from 'tree-sitter';
@@ -64,7 +65,6 @@ export class CodeAnalyzer {
     this.tsParser.setLanguage(TypeScript.typescript);
   }
 
-  // FIX 1: Removed __tests__, test, tests exclusions
   private findJSFiles(dir: string): string[] {
     const files: string[] = [];
     const items = fs.readdirSync(dir);
@@ -156,11 +156,12 @@ export class CodeAnalyzer {
         }
       }
       
-      // 3. Arrow functions: const add = () => {}
+      // 3. Arrow functions and object literals: const add = () => {} or const obj = {...}
       if (node.type === 'variable_declarator') {
         const nameNode = node.childForFieldName('name');
         const valueNode = node.childForFieldName('value');
         
+        // Arrow function: const add = () => {}
         if (nameNode && valueNode && valueNode.type === 'arrow_function') {
           this.functions.push({
             name: nameNode.text,
@@ -169,13 +170,20 @@ export class CodeAnalyzer {
           });
           this.calculateComplexity(valueNode, nameNode.text, filePath);
         }
+
+        // 🆕 FIX BUG #4: Object literal with methods
+        // const obj = { method() {}, arrow: () => {}, traditional: function() {} }
+        if (nameNode && valueNode && valueNode.type === 'object') {
+          const objectName = nameNode.text;
+          this.extractObjectMethods(valueNode, objectName, filePath);
+        }
       }
       
-     
+      // 4. Class methods (already working after P0 fixes)
       if (node.type === 'method_definition') {
         const nameNode = node.childForFieldName('name');
         if (nameNode) {
-          // Walk up: method_definition -> class_body -> class_declaration
+          // Walk up: method_definition → class_body → class_declaration
           let className = 'Unknown';
           let parent = node.parent;
           while (parent) {
@@ -190,7 +198,6 @@ export class CodeAnalyzer {
           }
 
           const functionName = `${className}.${nameNode.text}`;
-          
 
           this.functions.push({
             name: functionName,
@@ -198,9 +205,30 @@ export class CodeAnalyzer {
             line: nameNode.startPosition.row + 1
           });
 
-          // Use the whole node for complexity calculation
           const bodyNode = node.childForFieldName('body');
           this.calculateComplexity(bodyNode || node, functionName, filePath);
+        }
+      }
+
+      
+      // return { method() {} } or someFunc({ handler() {} })
+      if (node.type === 'object') {
+        // Check if this object is NOT already handled by variable_declarator
+        let parent = node.parent;
+        let isInVariableDeclarator = false;
+        
+        while (parent) {
+          if (parent.type === 'variable_declarator') {
+            isInVariableDeclarator = true;
+            break;
+          }
+          parent = parent.parent;
+        }
+
+        // Only extract if it's a standalone object (not assigned to a variable)
+        if (!isInVariableDeclarator) {
+          // Use context-based naming for anonymous objects
+          this.extractObjectMethods(node, 'AnonymousObject', filePath);
         }
       }
   
@@ -211,6 +239,62 @@ export class CodeAnalyzer {
     };
   
     visit(tree.rootNode);
+  }
+
+  // Extract methods from object literals
+  private extractObjectMethods(objectNode: Parser.SyntaxNode, objectName: string, filePath: string): void {
+    for (let i = 0; i < objectNode.childCount; i++) {
+      const child = objectNode.child(i);
+      if (!child) continue;
+
+      // 1. Method shorthand syntax: { method() {} }
+      if (child.type === 'method_definition') {
+        const nameNode = child.childForFieldName('name');
+        if (nameNode) {
+          const functionName = `${objectName}.${nameNode.text}`;
+          
+          this.functions.push({
+            name: functionName,
+            file: filePath,
+            line: nameNode.startPosition.row + 1
+          });
+
+          // Use the method body for complexity
+          const bodyNode = child.childForFieldName('body');
+          this.calculateComplexity(bodyNode || child, functionName, filePath);
+        }
+      }
+
+      // 2. Property pairs with function values
+      // { method: function() {} } or { method: () => {} }
+      if (child.type === 'pair') {
+        const keyNode = child.childForFieldName('key');
+        const valueNode = child.childForFieldName('value');
+
+        if (keyNode && valueNode && (
+          valueNode.type === 'function' ||
+          valueNode.type === 'function_expression' ||
+          valueNode.type === 'arrow_function'
+        )) {
+          const functionName = `${objectName}.${keyNode.text}`;
+          
+          this.functions.push({
+            name: functionName,
+            file: filePath,
+            line: keyNode.startPosition.row + 1
+          });
+
+          this.calculateComplexity(valueNode, functionName, filePath);
+        }
+      }
+
+      // 3. Shorthand property identifier (references, not definitions)
+      // { myFunc } - this just references an existing function
+      // Skip these as they're not function definitions
+      if (child.type === 'shorthand_property_identifier') {
+        // Do nothing - we'll catch the actual function definition elsewhere
+      }
+    }
   }
 
   // Extract function calls from a single file
@@ -412,7 +496,6 @@ export class CodeAnalyzer {
     }
   }
 
-  // FIX 3: Added switch_case and ternary node types for TypeScript
   private calculateComplexity(node: Parser.SyntaxNode, functionName: string, filePath: string): void {
     let complexity = 1; // Base complexity
     let lineCount = node.endPosition.row - node.startPosition.row + 1;
@@ -448,8 +531,8 @@ export class CodeAnalyzer {
         currentNode.type === 'case_clause' ||       // JavaScript switch case
         currentNode.type === 'switch_case' ||       // TypeScript switch case
         currentNode.type === 'catch_clause' ||
-        currentNode.type === 'conditional_expression' ||
-        currentNode.type === 'ternary_expression' 
+        currentNode.type === 'conditional_expression' ||  // JavaScript ternary
+        currentNode.type === 'ternary_expression'         // TypeScript ternary
       ) {
         complexity++;
       }
@@ -485,8 +568,6 @@ export class CodeAnalyzer {
     this.fileCount = files.length;
     
     files.forEach(file => this.analyzeFile(file));  
-
-
 
     const graph = new CallGraph();
 
@@ -535,3 +616,7 @@ export class CodeAnalyzer {
     return this.complexity;
   }
 }
+
+
+
+
